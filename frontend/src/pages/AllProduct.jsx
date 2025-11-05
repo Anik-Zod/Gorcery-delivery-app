@@ -2,22 +2,23 @@ import { useSelector } from 'react-redux'
 import ProductCard from '../components/ProductCard'
 import { useEffect, useState } from 'react'
 import useFetch from '../hooks/useFetch'
+import useDebounce from '../hooks/useDebounce'
 
 function AllProduct() {
 const { data:products, isLoading, isError, error, refetch } = useFetch('products', '/product/list');
 const searchQuery = useSelector(state=>state.products.searchQuery)
 const [filterProducts,setFilterProducts] = useState([])
-
+const debouncedText = useDebounce(searchQuery,400)
 
 useEffect(()=>{
   if(!products)return
-   if(searchQuery.length > 0){
+   if(debouncedText?.length > 0){
      setFilterProducts(products.filter(
-        product=>product.name.toLowerCase().includes(searchQuery.toLowerCase())))
+        product=>product.name.toLowerCase().includes(debouncedText.toLowerCase())))
    }else{
      setFilterProducts(products)
    }
-},[products,searchQuery])
+},[products,debouncedText])
 
 if(isLoading)return <h1>Loading...</h1>
 if(isError)return <h1>{error}</h1>
