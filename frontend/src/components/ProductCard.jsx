@@ -59,6 +59,7 @@ const ProductCard = ({ product }) => {
           className="group-hover:scale-105 transition max-w-26 md:max-w-36"
           src={product.image[0]}
           alt={product.name}
+          loading="lazy"
         />
       </div>
       <div className="text-gray-500/60 text-sm">
@@ -75,6 +76,7 @@ const ProductCard = ({ product }) => {
                 className="md:w-3.5 w-3"
                 src={i < 4 ? assets.star_icon : assets.star_dull_icon}
                 alt=""
+
               />
             ))}
           <p>(4)</p>
@@ -92,7 +94,7 @@ const ProductCard = ({ product }) => {
                 className="flex items-center justify-center gap-1 bg-primary border border-primary md:w-[80px] w-[64px] h-[34px] rounded text-white cursor-pointer font-medium"
                 onClick={handleAdd}
               >
-                <img src={assets.cart_icon} alt="" />
+                <img src={assets.cart_icon} alt="" loading="lazy" />
                 Add
               </button>
             ) : (

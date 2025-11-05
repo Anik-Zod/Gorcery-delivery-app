@@ -43,6 +43,7 @@ function Categories() {
                 <img
                   src={category.image}
                   alt={category.text}
+                  loading="lazy"
                   className="group-hover:scale-110 transition duration-300 max-w-28"
                 />
                 <p className="text-sm font-medium">{category.category}</p>
