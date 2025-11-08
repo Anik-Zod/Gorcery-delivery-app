@@ -51,17 +51,15 @@ const ProductDetails = () => {
 
   const [relatedProducts, setRelatedProducts] = useState([]);
   useEffect(() => {
-    if (sugesstionProducts && product) {
-      setRelatedProducts(
-        sugesstionProducts.filter((item) => item._id !== product._id)
-      );
-    }
+    if(!product) return;
+    
+    const productArray = Array.isArray(sugesstionProducts)?sugesstionProducts:[];
+
+    const filteredProducts = productArray.filter((item)=>item._id !== product._id);
+    
+    setRelatedProducts(filteredProducts);
   }, [sugesstionProducts, product]);
-  useEffect(() => {
-    setRelatedProducts(
-      sugesstionProducts.filter((item) => item._id != product._id)
-    );
-  }, [product]);
+
 
   if (isLoading) return <h1>Loading</h1>;
   if (isError) return <h1>{error}</h1>;
@@ -170,8 +168,8 @@ const ProductDetails = () => {
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 md:gap-6 lg:grid-cols-5 mt-6 w-full">
             {relatedProducts
               .filter((item) => item.inStock)
-              .map((item, index) => (
-                <ProductCard key={index} product={item} />
+              .map((item) => (
+                <ProductCard key={item._id} product={item} />
               ))}
           </div>
           <button

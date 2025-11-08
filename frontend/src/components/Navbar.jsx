@@ -95,7 +95,7 @@ useEffect(() => {
 
         {user ? (
           <div className="flex items-center gap-4">
-            <img src={user.image} className="h-10 rounded-full " alt="" />
+            <img src={user.image} className="size-10 object-cover rounded-full " alt="profile_picture" loading="lazy" />
             <p>{user.name}</p>
             <button
               onClick={handleLogout}
