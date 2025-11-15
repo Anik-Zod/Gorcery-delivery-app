@@ -1,64 +1,82 @@
 import { useNavigate } from "react-router-dom";
 import { LogOut, Search } from "lucide-react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { setSearchQuery } from "../features/productSlice";
 import { useState } from "react";
+import {motion} from "motion/react"
 
 function MainBanner() {
   const dispatch = useDispatch();
-  const { searchQuery } = useSelector((state) => state.products);
-  const [input,setInput] = useState("Pepsi")
+  const [input, setInput] = useState("Pepsi");
 
   const handleChange = () => {
     dispatch(setSearchQuery(input));
   };
+
   return (
-    <div className="mt-9 relative">
-      <h1 className="text-center px-17 text-black text-4xl md:text-6xl font-extrabold drop-shadow-2xl mb-8 tracking-tight">
-        Freshness You Can Trust,
-      </h1>
-      <h1 className="px-17 text-primary text-center text-4xl md:text-6xl font-bold drop-shadow-2xl mb-8 tracking-tight">
-        {" "}
-        Savings You’ll Love!
-      </h1>
+    <div className="mt-12 relative w-full">
 
-      <div className="hidden sm:flex mt-9  justify-center items-center gap-8 ">
-        <OffersCard
-          service="Fast delivery"
-          from="from nearest store"
-          discount="upto 60% off"
-          image="1.png"
-        />
-        <OffersCard
-          service="Handpicked Quality"
-          from="Unbeatable Prices!"
-          discount="upto 40% off"
-          image="2.png"
-        />
-        <OffersCard
-          service="Farm-Fresh Picks"
-          from="Just a Click Away!"
-          discount="upto 10% off"
-          image="3.png"
-        />
+      {/* MAIN HEADING */}
+      <div className="text-center">
+        <h1 className="text-black text-4xl md:text-6xl font-semibold drop-shadow-sm tracking-tight">
+          Freshness You Can Trust,
+        </h1>
+        <h1 className="text-primary text-4xl md:text-6xl tracking-tight">
+          Savings You’ll Love!
+        </h1>
       </div>
-      <div>
-<div className="sm:hidden mt-9 relative w-full px-4">
-  {/* Search Box */}
-  <div className="mt-6 mb-12 relative flex justify-center">
-    <input
-      onChange={(e) => setInput(e.target.value)}
-      className="w-full sm:w-3/4 md:w-1/2 lg:w-1/3 border border-gray-300 rounded-2xl py-2 px-12 focus:outline-none"
-      placeholder="Search..."
-    />
-    <Search
-      onClick={handleChange}
-      className="absolute right-6 top-2 sm:right-10 text-primary cursor-pointer"
-    />
-  </div>
-</div>
 
+      {/* OFFERS CARDS (Desktop) */}
+      <div className="hidden sm:flex mt-12 justify-center items-center lg:gap-8 gap-0">
+        {[
+          {
+            service: "Fast Delivery",
+            from: "From Nearest Store",
+            discount: "Up To 60% Off",
+            image: "1.png",
+          },
+          {
+            service: "Handpicked Quality",
+            from: "Unbeatable Prices",
+            discount: "Up To 40% Off",
+            image: "2.png",
+          },
+          {
+            service: "Farm-Fresh Picks",
+            from: "Just a Click Away",
+            discount: "Up To 10% Off",
+            image: "3.png",
+          },
+        ].map((card, index) => (
+          <motion.div 
+          initial={{opacity:0}}
+          animate={{opacity:1}}
+          transition={{duration:1}}
+          >
+            <OffersCard key={index} {...card} />
+          </motion.div>
+        ))}
       </div>
+
+      {/* SEARCH BAR (Mobile) */}
+      <div className="sm:hidden mt-10 px-4 relative">
+        <div className="relative w-full">
+          <input
+            onChange={(e) => setInput(e.target.value)}
+            className="w-full border border-gray-200 rounded-2xl py-3 pl-5 pr-12 
+              shadow-sm bg-white/70 backdrop-blur-lg focus:ring-2 focus:ring-primary 
+              transition-all outline-none"
+            placeholder="Search fresh products..."
+          />
+
+          <Search
+            onClick={handleChange}
+            className="absolute right-4 top-3 text-primary cursor-pointer hover:scale-105 transition"
+            size={22}
+          />
+        </div>
+      </div>
+
     </div>
   );
 }
@@ -67,29 +85,41 @@ export default MainBanner;
 
 export function OffersCard({ service, from, discount, image }) {
   const navigate = useNavigate();
+
   return (
-    <div className="w-75 mt-2 h-65 overflow-hidden bg-primary/15 rounded-4xl shadow hover:shadow-lg transition duration-300 flex flex-col justify-between p-5 z-30">
+    <div
+      className="group lg:w-82 h-72 bg-white/70 backdrop-blur-xl rounded-3xl shadow-md 
+        hover:shadow-xl transition-all duration-300 p-6 flex flex-col justify-between 
+        border border-white/40 cursor-pointer"
+    >
+      {/* TEXT */}
       <div>
-        <h1 className="text-3xl font-bold uppercase text-gray-800 ">
+        <h1 className="text-2xl font-bold tracking-tight text-gray-800 group-hover:text-primary transition">
           {service}
         </h1>
-        <p className=" uppercase text-gray-500 text-sm">{from}</p>
-        <p className="uppercase bg-primary/15 text-primary text-xs font-semibold rounded-full px-3 py-1 w-30  mt-3">
+        <p className="uppercase text-gray-500 text-sm mt-1">{from}</p>
+
+        <p className="uppercase bg-primary/10 text-primary text-xs font-semibold 
+          rounded-full px-3 py-1 mt-3 inline-block">
           {discount}
         </p>
       </div>
 
+      {/* IMAGE + BUTTON */}
       <div className="relative flex justify-center items-center mt-4">
-        <img
+        <motion.img
+        whileHover={{scale:1.1}}
           src={image}
           alt="Food"
-          className="h-37 translate-x-20 object-contain transition-transform duration-300 hover:scale-105"
+          className="h-36 object-contain"
         />
+
         <div
           onClick={() => navigate("/products")}
-          className="absolute left-0 w-10 h-10 cursor-pointer bg-primary rounded-full flex items-center justify-center shadow-md"
+          className="absolute left-0 w-11 h-11 bg-primary text-white rounded-full 
+            flex items-center justify-center shadow-lg hover:scale-105 transition"
         >
-          <LogOut size={16} color="white" />
+          <LogOut size={18} />
         </div>
       </div>
     </div>

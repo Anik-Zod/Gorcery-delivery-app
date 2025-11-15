@@ -19,10 +19,10 @@ function Categories() {
   const { data: categories, isLoading } = useFetch('category', '/product/getCategory');
 
   return (
-    <div className="mt-16">
+    <div className="container mx-auto mt-16">
       <p className="text-2xl md:text-3xl font-medium">Categories</p>
 
-      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 lg:grid-cols-6 xl:grid-cols-7 gap-6 mt-6">
+      <div className=" grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 lg:grid-cols-6 xl:grid-cols-7 gap-6 mt-6">
         {isLoading
           ? Array.from({ length: 7 }).map((_, index) => (
               <div

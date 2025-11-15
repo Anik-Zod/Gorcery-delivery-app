@@ -48,6 +48,31 @@ export const productList = async (req, res) => {
   }
 };
 
+export const getAllProductsByQuery = async (req,res)=>{
+ const { search, categories, minPrice = 0, maxPrice = 1000 } = req.query;
+  try {
+    const filter  = {inStock:true}
+    
+    if(search){
+      filter.name ={$regex:search , $options:"i"}
+    }
+
+    if(categories){
+      filter.category = {$in: categories.split(",")}
+    }
+
+    filter.price = {
+      $gte: parseFloat(minPrice),
+      $lte: parseFloat(maxPrice),
+    };
+    
+    const products = await Product.find(filter).sort({createdAt:-1});
+    res.status(200).json(products)
+  } catch (error) {
+    res.status(500).json({error:"server error"})
+  }
+}
+
 //get all product by category
 export const productByCategory = async (req, res) => {
   const { category } = req.params;

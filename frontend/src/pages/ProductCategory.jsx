@@ -20,7 +20,7 @@ function ProductCategory() {
   if (isError) return <h1>{error}</h1>;
 
   return (
-    <div className="mt-16">
+    <div className="container mt-16">
       {products && (
         <div className="flex flex-col items-end w-max">
           <p className="text-2xl font-medium">

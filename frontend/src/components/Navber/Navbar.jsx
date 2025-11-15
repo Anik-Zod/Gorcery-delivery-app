@@ -1,15 +1,17 @@
 import React, { useEffect, useRef, useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
-import { assets } from "../assets/assets";
+import { assets } from "../../assets/assets";
 import { useDispatch, useSelector } from "react-redux";
-import { setShowUserLogin, logout, setUser } from "../features/appSlice";
-import { setSearchQuery } from "../features/productSlice";
-import axiosInstance from "../api/axios";
-import {House, CalendarArrowDown, ShoppingBag, Info, Contact } from 'lucide-react';
+import { setShowUserLogin, logout, setUser } from "../../features/appSlice";
+import {House, ShoppingBag, Info, Contact, Salad } from 'lucide-react';
+import SearchBox from "./SearchBox";
+import UserDropdown from "./UserDropdown";
+import Menu from "./MenuItem";
 
 export default function Navbar() {
   const dispatch = useDispatch();
   const [open, setOpen] = useState(false);
+  const [openMenu, setOpenMenu] = useState(false);
 
   const { searchQuery } = useSelector((state) => state.products);
   const { user, showUserLogin } = useSelector((state) => state.app);
@@ -17,15 +19,9 @@ export default function Navbar() {
   const cart = useSelector((state) => state.cart.cart);
   const navigate = useNavigate();
 
-  const handleLogout = () => {
-    dispatch(logout());
-    dispatch(setShowUserLogin(false));
-    axiosInstance.get("/user/logout");
-  };
 
-  const handleSearch = (e) => {
-    dispatch(setSearchQuery(e.target.value));
-  };
+
+
   useEffect(() => {
     if (searchQuery.length > 0) {
       navigate("/products");
@@ -48,40 +44,18 @@ useEffect(() => {
 }, []);
 
   return (
-    <nav className="flex items-center justify-between px-6 sm:px-6 md:px-16 lg:px-24 xl:px-27 py-4 border-b border-gray-300 bg-white relative transition-all">
+    <nav className="flex relative items-center justify-between px-6 sm:px-6 md:px-16 lg:px-24 xl:px-27 py-4 border-b border-gray-300 bg-white  transition-all">
       <NavLink to={"/"}>
-        <img
-          className="h-10"
-          src="https://res.cloudinary.com/dj6y31jyx/image/upload/v1752504763/logo_lppprr.png"
-          alt="dummyLogoColored"
-        />
+        <div className="flex gap-2 text-3xl text-green-600"> <Salad color="green" size={34}/> <p>Grocery</p></div>
       </NavLink>
 
       {/* Desktop Menu */}
       <div className="hidden sm:flex items-center gap-8">
-        <NavLink to={"/"}> Home</NavLink>
-        <NavLink to={"/products"}>All Product</NavLink>
-        
-        {user && (
-          <div
-            onClick={() => setOpen(false)}
-            className="bg-primary/20 px-3 py-2 hover:bg-primary-dull rounded-xl"
-          >
-            <NavLink to={"/my-orders"} className="block">
-              My Orders
-            </NavLink>
-          </div>
-        )}
-
-        <div className="hidden lg:flex items-center text-sm gap-2 border border-gray-300 px-3 rounded-full">
-          <input
-            onChange={handleSearch}
-            className="py-1.5 w-full bg-transparent outline-none placeholder-gray-500"
-            type="text"
-            placeholder="Search products"
-          />
-          <img src={assets.search_icon} alt="" />
-        </div>
+        <NavLink className="hover:text-green-600  text-[16px]" to={"/"}> Home</NavLink>
+        <NavLink className="hover:text-green-600  text-[16px]" to={"/products"}>All Product</NavLink>
+        <NavLink className="hover:text-green-600  text-[16px]" to={"/hotdeals"}>Hot Deal </NavLink>
+        <NavLink className="hover:text-green-600  text-[16px]" to={"/contact"}>Contact </NavLink>
+       <SearchBox/>
 
         <div
           onClick={() => navigate("/cart")}
@@ -94,15 +68,8 @@ useEffect(() => {
         </div>
 
         {user ? (
-          <div className="flex items-center gap-4">
-            <img src={user.image} className="size-10 object-cover rounded-full " alt="profile_picture" loading="lazy" />
-            <p>{user.name}</p>
-            <button
-              onClick={handleLogout}
-              className=" cursor-pointer px-6 py-2 mt-2 bg-primary hover:bg-dull transition text-white rounded-full text-sm"
-            >
-              logout
-            </button>
+          <div onClick={()=>setOpenMenu(!openMenu)}>
+            <UserDropdown user={user}/>
           </div>
         ) : (
           <button
@@ -110,9 +77,9 @@ useEffect(() => {
               setOpen(false);
               dispatch(setShowUserLogin(true));
             }}
-            className="cursor-pointer px-6 py-2 mt-2 bg-primary hover:bg-dull transition text-white rounded-full text-sm"
+            className="cursor-pointer px-6 py-2 mt-2 bg-primary hover:bg-dull transition text-white rounded-xs text-sm"
           >
-            Login
+            Sign in
           </button>
         )}
       </div>
@@ -193,7 +160,7 @@ useEffect(() => {
                 handleLogout();
                 setOpen(false);
               }}
-              className="cursor-pointer px-6 py-2 mt-2 bg-primary hover:bg-dull transition text-white rounded-full text-sm w-35 text-center"
+              className="cursor-pointer px-6 py-2 mt-2 bg-primary hover:bg-dull transition text-white rounded-xl text-sm w-35 text-center"
             >
               Logout
             </button>
@@ -205,7 +172,7 @@ useEffect(() => {
               }}
               className="cursor-pointer px-6 py-2 mt-2 bg-primary hover:bg-dull transition text-white rounded-full text-sm w-full text-center"
             >
-              Login
+              Sign in
             </button>
           )}
         </nav>
