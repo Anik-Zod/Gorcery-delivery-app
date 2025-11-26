@@ -8,8 +8,12 @@ const useFetch = (key, url) => {
             const response = await axiosInstance.get(url)
             return response.data;
         },
+        staleTime: 1000 * 60 * 5, // cache for 5 minutes
     });
 };
 
 export default useFetch;
+
+
+
 

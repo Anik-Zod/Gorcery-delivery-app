@@ -36,7 +36,10 @@ export const productSlice = createSlice({
     },
     clearPrice :(state)=>{
       state.filters.priceRange = { min: 0, max: 1000 }
-    }
+    },
+    clearSearchQuery: (state) => {
+      state.searchQuery = "";
+    },
 
   },
 });
@@ -46,7 +49,8 @@ export const {
   toggleCategory,
   setPriceRange,
   clearCategory,
-  clearPrice
+  clearPrice,
+  clearSearchQuery,
 } = productSlice.actions;
 
 export default productSlice.reducer;

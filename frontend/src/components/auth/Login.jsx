@@ -5,8 +5,9 @@ import {
   setAddress,
   setShowUserLogin,
   setUser,
-} from "../features/appSlice";
-import axiosInstance from "../api/axios";
+} from "../../features/appSlice";
+
+import axiosInstance from "../../api/axios.js"
 import { useForm } from "react-hook-form";
 import { Shield, Star, Users } from "lucide-react";
 
@@ -58,6 +59,13 @@ export default function Login() {
       );
     }
   };
+  const handleGoogle = async () =>{
+     try {
+       window.location.href = `${import.meta.env.VITE_API_URL}/auth/google`;
+    }catch(error){
+      console.error("Google Login error:", error.response?.data || error.message);
+    }
+  }
 
   const handleRegistration = async (data) => {
     const { email, password, name, image } = data;
@@ -104,7 +112,7 @@ export default function Login() {
             {state === "login" ? "User Login" : "Create Account"}
           </h2>
           <p className="text-center text-[16px]">Welcome back! Please sign in to continue</p>
-           <button className="flex  justify-center gap-3 bg-[#F0F0F2] rounded-3xl hover:bg-gray-400/40 cursor-pointer py-2.5"><img src="google.png" alt="google png" className="size-5 " /><span className="text-[16px]">Google</span></button>
+           <button onClick={handleGoogle} className="flex  justify-center gap-3 bg-[#F0F0F2] rounded-3xl hover:bg-gray-400/40 cursor-pointer py-2.5"><img src="google.png" alt="google png" className="size-5 " /><span className="text-[16px]">Google</span></button>
           {state === "register" && (
             <>
               <div className="w-full">

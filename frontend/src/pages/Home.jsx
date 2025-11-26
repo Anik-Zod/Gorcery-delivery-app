@@ -1,11 +1,11 @@
 import React from 'react'
-import MainBanner from '../components/MainBanner'
+import MainBanner from '../components/Banners/MainBanner'
 import Categories from '../components/Categories'
 import BestSeller from '../components/BestSeller'
-import BottomBanner from '../components/BottomBanner'
-import NewsLatter from '../components/NewsLatter'
+import BottomBanner from '../components/Banners/BottomBanner'
+import NewsLatter from '../components/Banners/NewsLatter'
 import Practice from '../components/Practice'
-import Banner from '../components/Banner'
+
 import Deals from "../components/Hotdeal/Deals"
 
 function Home() {
@@ -13,12 +13,11 @@ function Home() {
     <div>
         {/* <Practice/> */}
         <MainBanner/>
-        {/* <Banner/> */}
-        <Categories/>
-        <BestSeller/>
-        <div className='container'>
+        <div className='container mt-22'>
          <Deals/>
         </div>
+        <Categories/>
+        <BestSeller/> 
         <BottomBanner/>
         <NewsLatter/>
     </div>

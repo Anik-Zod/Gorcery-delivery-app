@@ -1,6 +1,6 @@
 import React from "react";
 import { useParams } from "react-router-dom";
-import ProductCard from "../components/ProductCard";
+import ProductCard from "../components/Product/ProductCard";
 import useFetch from "../hooks/useFetch";
 
 function ProductCategory() {

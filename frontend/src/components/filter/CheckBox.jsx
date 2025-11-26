@@ -1,7 +1,7 @@
 import React from "react";
 import { Check } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
-import { setPriceRange, toggleCategory } from "../features/productSlice";
+import { setPriceRange, toggleCategory } from "../../features/productSlice";
 
 function CheckBox() {
   const categoryList = ["Vegetables", "Fruits", "Dairy", "Instant", "Drinks"];
@@ -14,7 +14,7 @@ function CheckBox() {
   const handleCategoryToggle = (category) => {
     dispatch(toggleCategory(category.toLowerCase()));
   };
-  console.log(categories)
+
 
   return (
     <>

@@ -4,9 +4,9 @@ import { Link, useParams } from "react-router-dom";
 import { assets } from "../assets/assets";
 import { addCartItems } from "../features/cartSlice";
 import { useNavigate } from "react-router-dom";
-import ProductCard from "../components/ProductCard";
+import ProductCard from "../components/Product/ProductCard";
 import useFetch from "../hooks/useFetch";
-import {ShoppingBag, ShoppingBagIcon, ShoppingCart} from "lucide-react"
+import { ShoppingBagIcon, ShoppingCart } from "lucide-react";
 import ProductDescription from "../components/Product/ProductDescription";
 import SalesFeatures from "../components/Product/SalesFeatures";
 import ProductReview from "../components/Product/ProductReview";
@@ -18,14 +18,12 @@ const ProductDetails = () => {
 
   const { id } = useParams();
 
-
   const {
     data: product,
     isLoading,
     isError,
     error,
   } = useFetch("detail", `/product/${id}`);
-
 
   const {
     data: sugesstionProducts = [],
@@ -55,15 +53,18 @@ const ProductDetails = () => {
 
   const [relatedProducts, setRelatedProducts] = useState([]);
   useEffect(() => {
-    if(!product) return;
-    
-    const productArray = Array.isArray(sugesstionProducts)?sugesstionProducts:[];
+    if (!product) return;
 
-    const filteredProducts = productArray.filter((item)=>item._id !== product._id);
-    
+    const productArray = Array.isArray(sugesstionProducts)
+      ? sugesstionProducts
+      : [];
+
+    const filteredProducts = productArray.filter(
+      (item) => item._id !== product._id
+    );
+
     setRelatedProducts(filteredProducts);
   }, [sugesstionProducts, product]);
-
 
   if (isLoading) return <h1>Loading</h1>;
   if (isError) return <h1>{error}</h1>;
@@ -114,10 +115,26 @@ const ProductDetails = () => {
           </div>
 
           <div className="text-sm w-full md:w-1/2">
-          <p className="text-[#0b4d35] bg-primary/20 rounded-xs font-semibold tracking-wider text-[15px] w-max px-3 py-1 flex justify-center items-center">{product.category}</p>
-            <h1 className="text-5xl font-medium tracking-tight mt-5">{product.name}</h1>
+            <p className="text-[#0b4d35] bg-primary/20 rounded-xs font-semibold tracking-wider text-[15px] w-max px-3 py-1 flex justify-center items-center">
+              {product.category}
+            </p>
+            <h1 className="text-5xl font-medium tracking-tight mt-5">
+              {product.name}
+            </h1>
             <div>
-              <p className="text-gray-500/70 text-2xl mt-4 ">Lorem ipsum dolor sit amet consectetur adipisicing elit. Ex unde illum expedita dolores aut nostrum, quidem placeat laborum nemo, beatae perspiciatis quae, sint tempore aliquid molestiae consequatur eum earum.</p>
+              <p className="mt-5">
+                {product.name} is selected with great care to ensure excellent
+                freshness and consistent quality. It belongs to the{" "}
+                {product.category} category, making it suitable for daily
+                grocery needs.
+              </p>
+
+              <p>
+                This product is perfect for a wide range of recipes, snacks, or
+                beverages, depending on its usage. Each piece is carefully
+                handled and packed to preserve natural flavor and nutritional
+                value.
+              </p>
             </div>
             <div className="flex items-center gap-0.5 mt-1">
               {Array(5)
@@ -137,10 +154,16 @@ const ProductDetails = () => {
                 MRP: ${product.price}
               </p>
               <div className=" flex items-center gap-2">
-                <p className="text-[26px] font-medium ">MRP: ${product.offerPrice}</p>
-                <span className="bg-[#FFE2E2] h-6 px-3 rounded-xs flex items-center text-[#d24200]">-10%</span>
+                <p className="text-[26px] font-medium ">
+                  MRP: ${product.offerPrice}
+                </p>
+                <span className="bg-[#FFE2E2] h-6 px-3 rounded-xs flex items-center text-[#d24200]">
+                  -10%
+                </span>
               </div>
-              <p className="bg-[#FEF9C2] text-[#FC7F08] py-1 mt-3 text-[18px] w-max px-5 rounded-xs">💰 Save 10% on this item!</p>
+              <p className="bg-[#FEF9C2] text-[#FC7F08] py-1 mt-3 text-[18px] w-max px-5 rounded-xs">
+                💰 Save 10% on this item!
+              </p>
             </div>
 
             <div className="flex items-center mt-4 gap-4 text-base">
@@ -148,8 +171,8 @@ const ProductDetails = () => {
                 onClick={handleAddTOCart}
                 className="w-full flex items-center justify-center gap-5 py-3.5 cursor-pointer font-medium bg-gray-100 text-gray-800/80 hover:bg-gray-200 transition"
               >
-                <ShoppingCart/>
-               Add to Cart
+                <ShoppingCart />
+                Add to Cart
               </button>
               <button
                 onClick={() => {
@@ -158,15 +181,15 @@ const ProductDetails = () => {
                 }}
                 className="w-full py-3.5 flex justify-center items-center gap-4 cursor-pointer font-medium bg-primary text-white hover:bg-primary-dull transition"
               >
-                 <ShoppingBagIcon />
+                <ShoppingBagIcon />
                 Buy now
               </button>
             </div>
           </div>
         </div>
-        <ProductDescription product={product}/>
-        <SalesFeatures/>
-        <ProductReview/>
+        <ProductDescription product={product} />
+        <SalesFeatures />
+        <ProductReview />
         {/* related products */}
         <div className="flex flex-col items-center mt-20">
           <div className="flex flex-col items-center w-max ">

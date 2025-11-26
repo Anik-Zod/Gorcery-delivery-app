@@ -1,17 +1,17 @@
-
-import { assets } from "../assets/assets";
+import { assets } from "../../assets/assets";
 import { useDispatch, useSelector } from "react-redux";
 import {
   addCartItems,
   removeCartItems,
   updateCartItemQuantity,
-} from "../features/cartSlice";
+} from "../../features/cartSlice";
 import { useNavigate } from "react-router-dom";
 
 const ProductCard = ({ product }) => {
   const dispatch = useDispatch();
   const cart = useSelector((state) => state.cart.cart);
-  const quantity = cart.find(item => item.productId === product._id)?.quantity || 0;
+  const quantity =
+    cart.find((item) => item.productId === product._id)?.quantity || 0;
 
   const handleAdd = () => {
     dispatch(
@@ -51,7 +51,7 @@ const ProductCard = ({ product }) => {
     <div
       onClick={() => {
         navigate(`/products/${product.category.toLowerCase()}/${product._id}`);
-        scrollTo(0,0)
+        scrollTo(0, 0);
       }}
       className="border max-h-90 h-70 border-gray-500/20 rounded-md md:px-4 px-3 py-2 bg-white min-w-45 max-w-56 w-full"
     >
@@ -77,22 +77,23 @@ const ProductCard = ({ product }) => {
                 className="md:w-3.5 w-3"
                 src={i < 4 ? assets.star_icon : assets.star_dull_icon}
                 alt=""
-
               />
             ))}
           <p>(4)</p>
         </div>
         <div className="flex items-end justify-between mt-3">
-          <p className="md:text-xl text-base font-medium text-primary">
-            ${product.offerPrice}{" "}
-            <span className="text-gray-500/60 md:text-sm text-xs line-through">
-              ${product.price}
-            </span>
-          </p>
-          <div onClick={(e)=>e.stopPropagation()} className="text-primary">
+          <div className="md:text-xl text-base font-medium text-primary">
+            <div className="flex flex-col">
+              <span className="text-gray-500/60 md:text-sm text-xs line-through">
+                ${product.price}
+              </span>
+              <span>${product.offerPrice}</span>
+            </div>
+          </div>
+          <div onClick={(e) => e.stopPropagation()} className="text-primary relative bottom-3">
             {quantity === 0 ? (
               <button
-                className="flex items-center justify-center gap-1 bg-primary border border-primary md:w-[80px] w-[64px] h-[34px] rounded text-white cursor-pointer font-medium"
+                className="flex items-center justify-center gap-1 bg-primary border border-primary md:w-[90px] w-[64px] h-[34px] rounded text-white cursor-pointer font-medium"
                 onClick={handleAdd}
               >
                 <img src={assets.cart_icon} alt="" loading="lazy" />

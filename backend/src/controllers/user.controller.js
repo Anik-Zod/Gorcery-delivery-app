@@ -8,7 +8,7 @@ export const register = async (req, res, next) => {
   try {
     const { name, email, password, } = req.body;
     const image = req.file;
-
+     
     // Basic input validation
     if (!name || !email || !password || !image) {
       return res

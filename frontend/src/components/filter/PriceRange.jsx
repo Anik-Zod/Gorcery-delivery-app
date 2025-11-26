@@ -1,7 +1,7 @@
 import React from "react";
 import { Check, X } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
-import { setPriceRange } from "../features/productSlice";
+import { setPriceRange } from "../../features/productSlice";
 
 // Define price ranges
 const priceRanges = [
@@ -16,7 +16,7 @@ export default function PriceRange() {
   const dispatch = useDispatch();
   const { priceRange } = useSelector((state) => state.products.filters);
   
-  console.log(priceRange)
+
   // Determine which range is currently selected
   const selectedValue = priceRanges.find(
     (r) => r.min === priceRange.min && r.max === priceRange.max

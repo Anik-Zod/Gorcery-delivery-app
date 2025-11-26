@@ -41,6 +41,7 @@ function UserDropdown({ user }) {
             className="size-8 object-cover rounded-full border-2 border-gray-300"
             alt="profile_picture"
             loading="lazy"
+            referrerPolicy="no-referrer"
           />
           <div className="text-green-600 rounded-full absolute -bottom-0.5 -right-1 size-3 border-2 border-gray-300 bg-green-600"></div>
         </div>

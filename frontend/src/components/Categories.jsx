@@ -33,7 +33,7 @@ function Categories() {
                 <Skeleton height={15} width={60} className="mt-2" />
               </div>
             ))
-          : categories.map((category, index) => (
+          : categories?.map((category, index) => (
               <div
                 key={index}
                 className="group cursor-pointer py-5 px-3 gap-2 rounded-lg flex flex-col justify-center items-center hover:shadow-lg transition"

@@ -1,4 +1,4 @@
-import { assets, features } from '../assets/assets'
+import { assets, features } from '../../assets/assets'
 
 
 function BottomBanner() {
@@ -20,6 +20,9 @@ function BottomBanner() {
                 ))}
             </div>
        </div>
+       <div className='absolute border border-red-600 animate-ping top-47 left-41 size-7 rounded-full'></div>
+    
+           
     </div>
   )
 }

@@ -3,7 +3,7 @@ import { SlidersHorizontal } from "lucide-react";
 import CheckBox from "./CheckBox";
 import PriceRange from "./PriceRange";
 import { useSelector, useDispatch } from "react-redux";
-import { setPriceRange, toggleCategory } from "../features/productSlice";
+import { setPriceRange, toggleCategory } from "../../features/productSlice";
 
 
 export default function Filter() {
@@ -13,7 +13,7 @@ export default function Filter() {
   
 
   return (
-    <aside className="w-[260px] rounded-xl border border-gray-200 bg-white shadow-sm hidden lg:block overflow-hidden">
+    <aside className="w-[260px] rounded-xs border border-gray-200 bg-white shadow-sm hidden lg:block overflow-hidden">
       {/* Header */}
       <div className="flex items-center gap-2 px-5 py-4 bg-gradient-to-r from-primary/10 to-primary/5 border-b border-gray-100">
         <SlidersHorizontal className="text-primary w-5 h-5" />

@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
-import { Flame, Timer, Package, Percent, Users} from "lucide-react";
+import { Flame, Timer, Package, Percent, Users } from "lucide-react";
+import { motion } from "motion/react";
 
 export default function Deals() {
-  // COUNTDOWN TIMER (dummy 2 days)
   const [time, setTime] = useState({
     days: 2,
     hours: 14,
@@ -10,6 +10,7 @@ export default function Deals() {
     seconds: 35,
   });
 
+  // COUNTDOWN TIMER
   useEffect(() => {
     const interval = setInterval(() => {
       setTime((prev) => {
@@ -28,7 +29,6 @@ export default function Deals() {
             }
           }
         }
-
         return { days, hours, minutes, seconds };
       });
     }, 1000);
@@ -37,87 +37,196 @@ export default function Deals() {
   }, []);
 
   return (
-    <div className=" mt-16 overflow-x-clip">
-    <div className="w-full rounded-3xl p-10 mt-8 bg-gradient-to-r from-[#ff4b2b] via-[#ff6a3d] to-[#ff961c] text-white">
+    <motion.div
+      initial={{ opacity: 0, y: 40 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: false, amount: 0.3 }}
+      transition={{ duration: 0.8, ease: "easeOut" }}
+    >
+      <motion.div
+        className="w-full rounded-3xl p-10 mt-8 
+        bg-gradient-to-r from-[#ff4b2b] via-[#ff6a3d] to-[#ff961c]
+        text-white relative overflow-hidden"
+        initial={{ backgroundPosition: "0% 0%" }}
+        whileInView={{ backgroundPosition: "100% 100%" }}
+        viewport={{ once: false }}
+        transition={{ duration: 8, repeat: Infinity, ease: "linear" }}
+      >
+        {/* Floating Fire */}
+        <motion.div
+          className="absolute right-10 top-10 opacity-20"
+          initial={{ y: 0 }}
+          whileInView={{ y: [-5, 5, -5] }}
+          viewport={{ once: false }}
+          transition={{ duration: 3, repeat: Infinity }}
+        >
+          <Flame size={70} />
+        </motion.div>
 
-      {/* Badges */}
-      <div className="flex gap-3">
-        <div className="flex items-center gap-1 bg-white/20 text-white px-4 py-1 rounded-full text-sm font-semibold">
-          <Flame size={16} /> HOT DEALS
-        </div>
+        {/* Badges */}
+        <motion.div
+          className="flex gap-3"
+          initial="hidden"
+          whileInView="show"
+          viewport={{ once: false, amount: 0.2 }}
+          variants={{
+            hidden: { opacity: 0, y: 20 },
+            show: {
+              opacity: 1,
+              y: 0,
+              transition: { staggerChildren: 0.15 },
+            },
+          }}
+        >
+          <motion.div
+            variants={{
+              hidden: { opacity: 0, y: 10 },
+              show: { opacity: 1, y: 0 },
+            }}
+            whileHover={{ scale: 1.05 }}
+            className="flex items-center gap-1 bg-white/20 px-4 py-1 rounded-full text-sm font-semibold"
+          >
+            <motion.div
+              whileInView={{ rotate: [-10, 10, -10] }}
+              viewport={{ once: false }}
+              transition={{ duration: 2, repeat: Infinity }}
+            >
+              <Flame size={16} />
+            </motion.div>
+            HOT DEALS
+          </motion.div>
 
-        <div className="flex items-center bg-white/20 text-white px-4 py-1 rounded-full text-sm font-semibold">
-          Up to 20% OFF
-        </div>
-      </div>
+          <motion.div
+            variants={{
+              hidden: { opacity: 0, y: 10 },
+              show: { opacity: 1, y: 0 },
+            }}
+            whileHover={{ scale: 1.05 }}
+            className="bg-white/20 px-4 py-1 rounded-full text-sm font-semibold"
+          >
+            Up to 20% OFF
+          </motion.div>
+        </motion.div>
 
-      <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center mt-6 gap-10">
+        <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center mt-6 gap-10">
 
-        {/* LEFT TEXT CONTENT */}
-        <div className="max-w-xl">
-          <h1 className="text-4xl md:text-5xl font-bold">Weekly Hot Deals</h1>
+          {/* LEFT CONTENT */}
+          <motion.div
+            className="max-w-xl"
+            initial={{ opacity: 0, x: -40 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: false }}
+            transition={{ duration: 0.7 }}
+          >
+            <motion.h1
+              className="text-4xl md:text-5xl font-bold"
+              initial={{ opacity: 0, y: 10 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: false }}
+              transition={{ delay: 0.2 }}
+            >
+              Weekly Hot Deals
+            </motion.h1>
 
-          <p className="text-white/90 mt-4 hidden md:block leading-relaxed text-lg">
-            Don’t miss out on these incredible limited-time offers! Save big on your favorite products
-            with discounts up to 20% off. Limited stock available.
-          </p>
+            <motion.p
+              className="text-white/90 mt-4 hidden md:block leading-relaxed text-lg"
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              viewport={{ once: false }}
+              transition={{ delay: 0.4 }}
+            >
+              Don’t miss out on these incredible limited-time offers! Save big!
+            </motion.p>
 
-          {/* STATS */}
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-5 mt-8">
-            {/* Products */}
-            <div className="bg-white/20 backdrop-blur-md p-5 rounded-xl">
-              <div className="flex items-center gap-2 text-white/90">
-                <Package size={20} /> <span>Products</span>
-              </div>
-              <h2 className="text-2xl font-bold mt-1">13</h2>
+            {/* STATS */}
+            <motion.div
+              className="grid grid-cols-1 sm:grid-cols-3 gap-5 mt-8"
+              initial="hidden"
+              whileInView="show"
+              viewport={{ once: false }}
+              variants={{
+                hidden: {},
+                show: { transition: { staggerChildren: 0.15 } },
+              }}
+            >
+              <StatBox icon={<Package size={20} />} label="Products" value="13" />
+              <StatBox icon={<Percent size={20} />} label="Avg. Discount" value="12%" />
+              <StatBox icon={<Users size={20} />} label="Happy Customers" value="2.5K+" />
+            </motion.div>
+          </motion.div>
+
+          {/* COUNTDOWN BOX */}
+          <motion.div
+            className="bg-white/10 backdrop-blur-lg p-6 rounded-2xl border border-white/20 w-full lg:w-auto"
+            initial={{ opacity: 0, scale: 0.9 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: false }}
+            transition={{ duration: 0.6 }}
+          >
+            <div className="flex items-center gap-2 text-red-900 font-semibold mb-4">
+              <Timer size={20} /> Deal Ends In:
             </div>
 
-            {/* Avg Discount */}
-            <div className="bg-white/20 backdrop-blur-md p-5 rounded-xl">
-              <div className="flex items-center gap-2 text-white/90">
-                <Percent size={20} /> <span>Avg. Discount</span>
-              </div>
-              <h2 className="text-2xl font-bold mt-1">12%</h2>
+            <div className="flex gap-4">
+              <TimeBox label="Days" value={time.days} />
+              <TimeBox label="Hours" value={time.hours} />
+              <TimeBox label="Mins" value={time.minutes} />
+              <TimeBox label="Secs" value={time.seconds} />
             </div>
-
-            {/* Happy Customers */}
-            <div className="bg-white/20 backdrop-blur-md p-5 rounded-xl">
-              <div className="flex items-center gap-2 text-white/90">
-                <Users size={20} /> <span>Happy Customers</span>
-              </div>
-              <h2 className="text-2xl font-bold mt-1">2.5K+</h2>
-            </div>
-          </div>
+          </motion.div>
         </div>
-
-        {/* RIGHT COUNTDOWN BOX */}
-        <div className="bg-white/10 backdrop-blur-lg p-6 rounded-2xl border border-white/20 w-full lg:w-auto">
-          <div className="flex items-center gap-2 text-red-900 font-semibold mb-4">
-            <Timer size={20} /> Deal Ends In:
-          </div>
-
-          <div className="flex gap-4">
-            {/* Time Block */}
-            <TimeBox label="Days" value={time.days} />
-            <TimeBox label="Hours" value={time.hours} />
-            <TimeBox label="Mins" value={time.minutes} />
-            <TimeBox label="Secs" value={time.seconds} />
-          </div>
-        </div>
-
-      </div>
-    </div>
-    </div>
+      </motion.div>
+    </motion.div>
   );
 }
 
+/* ---------- STAT BOX ---------- */
+function StatBox({ icon, label, value }) {
+  return (
+    <motion.div
+      className="bg-white/20 backdrop-blur-md p-5 rounded-xl cursor-pointer"
+      variants={{
+        hidden: { opacity: 0, y: 20 },
+        show: { opacity: 1, y: 0 },
+      }}
+      whileHover={{ scale: 1.05, rotate: 1 }}
+      transition={{ type: "spring", stiffness: 150 }}
+    >
+      <motion.div
+        className="flex items-center gap-2 text-white/90"
+        whileInView={{ x: [0, 3, 0] }}
+        viewport={{ once: false }}
+        transition={{ repeat: Infinity, duration: 2 }}
+      >
+        {icon} <span>{label}</span>
+      </motion.div>
+
+      <h2 className="text-2xl font-bold mt-1">{value}</h2>
+    </motion.div>
+  );
+}
+
+/* ---------- TIME BOX (FLIP) ---------- */
 function TimeBox({ label, value }) {
   return (
-    <div className="hidden md:block bg-white text-gray-800 font-bold px-6 py-4 rounded-xl shadow">
-      <div className="text-3xl">{value.toString().padStart(2, "0")}</div>
+    <motion.div
+      className="hidden md:block bg-white text-gray-800 font-bold px-6 py-4 rounded-xl shadow overflow-hidden"
+      initial={{ opacity: 0, y: 10 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: false }}
+    >
+      <motion.div
+        key={value}
+        initial={{ rotateX: 90, opacity: 0 }}
+        whileInView={{ rotateX: 0, opacity: 1 }}
+        viewport={{ once: false }}
+        transition={{ duration: 0.3 }}
+        className="text-3xl"
+      >
+        {value.toString().padStart(2, "0")}
+      </motion.div>
+
       <div className="text-sm font-medium text-gray-600">{label}</div>
-    </div>
+    </motion.div>
   );
 }
-
-

@@ -4,7 +4,7 @@ import { assets } from "../../assets/assets";
 import { useDispatch, useSelector } from "react-redux";
 import { setShowUserLogin, logout, setUser } from "../../features/appSlice";
 import {House, ShoppingBag, Info, Contact, Salad } from 'lucide-react';
-import SearchBox from "./SearchBox";
+import SearchBer from "../search/SearchBer";
 import UserDropdown from "./UserDropdown";
 import Menu from "./MenuItem";
 
@@ -50,12 +50,12 @@ useEffect(() => {
       </NavLink>
 
       {/* Desktop Menu */}
-      <div className="hidden sm:flex items-center gap-8">
+      <div className="hidden sm:flex items-center gap-7">
         <NavLink className="hover:text-green-600  text-[16px]" to={"/"}> Home</NavLink>
         <NavLink className="hover:text-green-600  text-[16px]" to={"/products"}>All Product</NavLink>
         <NavLink className="hover:text-green-600  text-[16px]" to={"/hotdeals"}>Hot Deal </NavLink>
         <NavLink className="hover:text-green-600  text-[16px]" to={"/contact"}>Contact </NavLink>
-       <SearchBox/>
+       <SearchBer/>
 
         <div
           onClick={() => navigate("/cart")}

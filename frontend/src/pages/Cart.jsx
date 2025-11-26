@@ -6,7 +6,7 @@ import { NavLink, useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import { replaceAddress } from "../features/appSlice";
 import axiosInstance from "../api/axios";
-import { ShoppingBag } from "lucide-react";
+import { ShoppingBag,Check } from "lucide-react";
 import { motion } from "motion/react";
 
 const Cart = () => {
@@ -53,7 +53,7 @@ const Cart = () => {
     }
   }, [addresses, selectedAddress]);
 
-  const [paymentOption, setPaymentOption] = useState("COD");
+  const [paymentOption, setPaymentOption] = useState("Online");
 
   const handlePlaceOrder = async () => {
     if (!selectedAddress) {
@@ -99,7 +99,7 @@ const Cart = () => {
           <div className="flex-1 max-w-4xl">
             <h1 className="text-3xl font-medium mb-6">
               Shopping Cart{" "}
-              <span className="text-sm text-primary">{quantity} Items</span>
+              <span className="text-[18px] text-primary-dull ml-5 bg-primary/20 py-2 px-10 rounded-lg ">{quantity} Items</span>
             </h1>
 
             <div className="grid grid-cols-[2fr_1fr_1fr] text-gray-500 text-base font-medium pb-3">
@@ -225,14 +225,42 @@ const Cart = () => {
                 Payment Method
               </p>
 
-              <select
-                onChange={(e) => setPaymentOption(e.target.value)}
-                className="w-full border border-gray-300 bg-white px-3 py-2 mt-2 outline-none"
-                value={paymentOption}
-              >
-                <option value="COD">Cash On Delivery</option>
-                <option value="Online">Online Payment</option>
-              </select>
+                <div className="flex flex-col mt-2 gap-2">
+      {/* Online Payment */}
+      <div
+        onClick={() => setPaymentOption("Online")}
+        className={`flex items-center space-x-3 cursor-pointer select-none p-2 rounded 
+          ${paymentOption === "Online" ? "bg-primary/20" : "bg-gray-100"} hover:bg-primary/30 transition`}
+      >
+        <div
+          className={`h-5 w-5 flex items-center justify-center border-2 rounded
+            ${paymentOption === "Online" ? "bg-primary border-primary" : "border-gray-300"}`}
+        >
+          {paymentOption === "Online" && <Check size={14} color="white" />}
+        </div>
+        <span>Online Payment</span>
+      </div>
+
+      {/* Cash On Delivery */}
+      <div
+        onClick={() => setPaymentOption("COD")}
+        className={`flex items-center space-x-3 cursor-pointer select-none p-2 rounded
+          ${paymentOption === "COD" ? "bg-primary/20" : "bg-gray-100"} hover:bg-primary/30 transition`}
+      >
+        <div
+          className={`h-5 w-5 flex items-center justify-center border-2 rounded
+            ${paymentOption === "COD" ? "bg-primary border-primary" : "border-gray-300"}`}
+        >
+          {paymentOption === "COD" && <Check size={14} color="white" />}
+        </div>
+        <span>Cash On Delivery</span>
+      </div>
+    </div>
+            
+            
+            
+            
+            
             </div>
 
             <hr className="border-gray-300" />

@@ -10,7 +10,7 @@ export const placeOrderCOD = async (req, res) => {
       return res.json({ success: false, message: "Invalid data" });
 
     const itemsIds = items.map((item) => item.product);
-    const products = await Product.find({
+    const products = await Product.find({ // database products
       _id: { $in: itemsIds },
     });
 

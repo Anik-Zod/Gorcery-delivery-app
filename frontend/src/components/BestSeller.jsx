@@ -1,5 +1,5 @@
 import React from 'react';
-import ProductCard from './ProductCard';
+import ProductCard from './Product/ProductCard';
 import useFetch from '../hooks/useFetch';
 import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
