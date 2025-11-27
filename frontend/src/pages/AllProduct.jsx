@@ -8,7 +8,7 @@ import PopupFilter from "../components/filter/PopupFilter";
 import { clearCategory, clearPrice, clearSearchQuery } from "../features/productSlice";
 import CardSkeleton from "../components/CardSkeleton";
 
-const ProductCard = lazy(() => import("../components/product/ProductCard.jsx"));
+const ProductCard = lazy(() => import("../components/Product/ProductCard"));
 
 function AllProduct() {
   const dispatch = useDispatch();

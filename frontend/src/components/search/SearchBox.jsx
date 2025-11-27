@@ -1,4 +1,4 @@
-import ProductCard from "../product/ProductCard";
+import ProductCard from "../Product/ProductCard";
 import { Search, X } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
 import { setSearchQuery } from "../../features/productSlice";
