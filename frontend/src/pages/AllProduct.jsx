@@ -1,5 +1,4 @@
 import { useDispatch, useSelector } from "react-redux";
-// Lazy load the ProductCard
 import { lazy, Suspense, useEffect, useState } from "react";
 import useFetch from "../hooks/useFetch";
 import useDebounce from "../hooks/useDebounce";
@@ -7,10 +6,10 @@ import Filter from "../components/filter/Filter";
 import { Funnel, X } from "lucide-react";
 import PopupFilter from "../components/filter/PopupFilter";
 import { clearCategory, clearPrice, clearSearchQuery } from "../features/productSlice";
-import Skeleton from "react-loading-skeleton";
 import CardSkeleton from "../components/CardSkeleton";
 
-const ProductCard = lazy(() => import("../components/product/ProductCard"));
+const ProductCard = lazy(() => import("../components/product/ProductCard.jsx"));
+
 function AllProduct() {
   const dispatch = useDispatch();
 
