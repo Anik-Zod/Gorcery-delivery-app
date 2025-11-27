@@ -3,10 +3,11 @@ import { NavLink, useNavigate } from "react-router-dom";
 import { assets } from "../../assets/assets";
 import { useDispatch, useSelector } from "react-redux";
 import { setShowUserLogin, logout, setUser } from "../../features/appSlice";
-import {House, ShoppingBag, Info, Contact, Salad } from 'lucide-react';
+import {House, ShoppingBag, Info, Contact, Salad, LogOut } from 'lucide-react';
 import SearchBer from "../search/SearchBer";
 import UserDropdown from "./UserDropdown";
 import Menu from "./MenuItem";
+import axiosInstance from "../../api/axios";
 
 export default function Navbar() {
   const dispatch = useDispatch();
@@ -43,10 +44,16 @@ useEffect(() => {
   };
 }, []);
 
+  const handleLogout = () => {
+    dispatch(logout());
+    dispatch(setShowUserLogin(false));
+    axiosInstance.get("/user/logout");
+  };
+
   return (
     <nav className="flex relative items-center justify-between px-6 sm:px-6 md:px-16 lg:px-24 xl:px-27 py-4 border-b border-gray-300 bg-white  transition-all">
       <NavLink to={"/"}>
-        <div className="flex gap-2 text-3xl text-green-600"> <Salad color="green" size={34}/> <p>Grocery</p></div>
+        <div className="flex gap-2 lg:text-3xl text-green-600"> <Salad color="green" size={34}/> <p>Grocery</p></div>
       </NavLink>
 
       {/* Desktop Menu */}
@@ -109,46 +116,39 @@ useEffect(() => {
           </button>
         </div>
 
-        <nav className="flex flex-col px-6 space-y-4 text-sm">
-          <NavLink onClick={() => setOpen(false)} to="/" className="block">
-            <div className="flex gap-3">
-             <House size={18}/>
-              Home
-            </div>
-          </NavLink>
-          <NavLink
-            onClick={() => setOpen(false)}
-            to="/products"
-            className="block"
-          >
-            <div className="flex gap-4">
-            <ShoppingBag size={16} />
-            All Product
-            </div>
-          </NavLink>
-          <NavLink onClick={() => setOpen(false)} to="#" className="block">
-            <div className="flex gap-3">
-           <Info size={16}/>
-            About
-            </div>
-          </NavLink>
-          <NavLink
-            onClick={() => setOpen(false)}
-            to="/contact"
-            className="block"
-          >
-            <div className="flex gap-3">
-             <Contact size={16}/>
-            Contact
-            </div>
-          </NavLink>
+
+
+        <nav className="flex flex-col px-6 space-y-7 text-sm">
+                  {/* image and */}
+
+        {user && <div className="flex gap-3 py-3 mb-2 border-b border-gray-300  items-center">
+          <div>
+            <img
+              src={user.image}
+              alt="user image"
+              loading="lazy"
+              className="size-13 object-cover rounded-full border-2 border-gray-300"
+            />
+          </div>
+
+          <div className="">
+            <p className="font-bold tracking-wide text-xl">{user.name}</p>
+            <p className="text-gray-400">{user.email}</p>
+          </div>
+        </div>}
+
+          <NavItems to="/" title="Home" onClick={() => setOpen(false)} icon={<House size={24}/>} />
+          <NavItems to="/products" title="All Product" onClick={() => setOpen(false)} icon={<ShoppingBag size={24} />} />
+          <NavItems to="#" title="About" onClick={() => setOpen(false)} icon={<Info size={24}/>} />
+          <NavItems to="/contact" title="Contact" onClick={() => setOpen(false)} icon={<Contact size={24}/>} /> 
 
           {user && (
             <div
               onClick={() => setOpen(false)}
-              className="bg-primary/20 px-3 py-2 hover:bg-primary-dull rounded-xl w-full"
+              className=" py-3 text-xl hover:bg-primary-dull/50 rounded-xl w-full"
             >
-              <NavLink to="/my-orders" className="block">
+              <NavLink to="/my-orders" className="flex items-center">
+                <ShoppingBag size={20} className="mr-4 ml-2"/>
                 My Orders
               </NavLink>
             </div>
@@ -160,8 +160,9 @@ useEffect(() => {
                 handleLogout();
                 setOpen(false);
               }}
-              className="cursor-pointer px-6 py-2 mt-2 bg-primary hover:bg-dull transition text-white rounded-xl text-sm w-35 text-center"
+              className="cursor-pointer px-6 py-2  flex items-center bg-primary hover:bg-dull transition text-white rounded-xl text-xl w-full "
             >
+              <LogOut size={18} className="mr-4"/>
               Logout
             </button>
           ) : (
@@ -170,13 +171,27 @@ useEffect(() => {
                 dispatch(setShowUserLogin(true));
                 setOpen(false);
               }}
-              className="cursor-pointer px-6 py-2 mt-2 bg-primary hover:bg-dull transition text-white rounded-full text-sm w-full text-center"
+              className="cursor-pointer px-6 py-2  bg-primary hover:bg-dull transition text-white rounded-full text-xl w-full "
             >
               Sign in
             </button>
           )}
+          
         </nav>
       </div>
     </nav>
+  );
+}
+
+function NavItems({ to, title, onClick, icon }) {
+  return (
+    <NavLink
+      to={to}
+      onClick={onClick}
+      className="hover:text-green-600 flex gap-4 text-xl ml-2 mt-3 "
+    >
+      {icon}
+      {title}
+    </NavLink>
   );
 }

@@ -7,13 +7,14 @@ import {
 } from "lucide-react";
 import { logout } from "../../features/appSlice";
 import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 export default function MenuItem({ user }) {
   const dispatch = useDispatch();
   const handleLogout = () => {
     dispatch(logout());
   };
-
+  const navigate = useNavigate();
   return (
     <div>
       <div className="mb-4">
@@ -33,10 +34,10 @@ export default function MenuItem({ user }) {
             <p className="text-gray-400">{user.email}</p>
           </div>
         </div>
-        <p className="flex tracking-tight gap-4 py-3 px-5 cursor-pointer hover:bg-primary/30 rounded-xl">
+        <p onClick={()=>navigate("/profile")} className="flex tracking-tight gap-4 py-3 px-5 cursor-pointer hover:bg-primary/30 rounded-xl">
           <User /> My Profile
         </p>
-        <p className="flex tracking-tight gap-4 py-3 px-5 cursor-pointer hover:bg-primary/30 rounded-xl">
+        <p onClick={()=>navigate("/my-orders")} className="flex tracking-tight gap-4 py-3 px-5 cursor-pointer hover:bg-primary/30 rounded-xl">
           <ShoppingCart /> My Orders
         </p>
         <p className="flex tracking-tight gap-4 py-3 px-5 cursor-pointer hover:bg-primary/30 rounded-xl">

@@ -7,7 +7,7 @@ import {
 } from "../../features/cartSlice";
 import { useNavigate } from "react-router-dom";
 
-const ProductCard = ({ product }) => {
+const ProductCard = ({ product, onNavigate }) => {
   const dispatch = useDispatch();
   const cart = useSelector((state) => state.cart.cart);
   const quantity =
@@ -50,6 +50,7 @@ const ProductCard = ({ product }) => {
   return (
     <div
       onClick={() => {
+        if (onNavigate) onNavigate();
         navigate(`/products/${product.category.toLowerCase()}/${product._id}`);
         scrollTo(0, 0);
       }}

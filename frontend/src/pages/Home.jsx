@@ -13,7 +13,7 @@ function Home() {
     <div>
         {/* <Practice/> */}
         <MainBanner/>
-        <div className='container mt-22'>
+        <div className='container sm:mt-22 '>
          <Deals/>
         </div>
         <Categories/>

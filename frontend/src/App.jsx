@@ -17,6 +17,7 @@ import Contact from './pages/Contact';
 import OAuthCallback from './components/auth/OAuthCallback';
 import { setSearchOpen } from './features/appSlice';
 import SearchBox from './components/search/SearchBox';
+import UserProfile from './pages/userProfile/UserProfile';
 
 
 
@@ -64,6 +65,7 @@ export default function App() {
           <Route path="/add-address" element={<AddAddress/>} />
           <Route path="/my-orders" element={<MyOrders/>} />
           <Route path="/me" element={<OAuthCallback/>}/>
+          <Route path="/profile/*" element={<UserProfile/>}/>
         </Routes>
       </div>
       <Footer/>

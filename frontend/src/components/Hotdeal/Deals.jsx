@@ -140,7 +140,7 @@ export default function Deals() {
 
             {/* STATS */}
             <motion.div
-              className="grid grid-cols-1 sm:grid-cols-3 gap-5 mt-8"
+              className="sm:grid grid-cols-1 sm:grid-cols-3 gap-5 mt-8  sm:w-160 hidden"
               initial="hidden"
               whileInView="show"
               viewport={{ once: false }}
@@ -149,15 +149,15 @@ export default function Deals() {
                 show: { transition: { staggerChildren: 0.15 } },
               }}
             >
-              <StatBox icon={<Package size={20} />} label="Products" value="13" />
-              <StatBox icon={<Percent size={20} />} label="Avg. Discount" value="12%" />
-              <StatBox icon={<Users size={20} />} label="Happy Customers" value="2.5K+" />
+              <StatBox icon={<Package size={35} />} label="Products" value="13" />
+              <StatBox icon={<Percent size={35} />} label="Avg. Discount" value="12%" />
+              <StatBox icon={<Users size={35} />} label="Happy Customers" value="2.5K+" />
             </motion.div>
           </motion.div>
 
           {/* COUNTDOWN BOX */}
           <motion.div
-            className="bg-white/10 backdrop-blur-lg p-6 rounded-2xl border border-white/20 w-full lg:w-auto"
+            className="bg-white/10 backdrop-blur-lg py-6 px-2 rounded-2xl border border-white/20 w-full lg:w-auto"
             initial={{ opacity: 0, scale: 0.9 }}
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: false }}
@@ -167,11 +167,13 @@ export default function Deals() {
               <Timer size={20} /> Deal Ends In:
             </div>
 
-            <div className="flex gap-4">
+            <div className="flex gap-2 sm:gap-4">
               <TimeBox label="Days" value={time.days} />
               <TimeBox label="Hours" value={time.hours} />
               <TimeBox label="Mins" value={time.minutes} />
-              <TimeBox label="Secs" value={time.seconds} />
+              <div className="hidden sm:block">
+                <TimeBox label="Secs" value={time.seconds} />
+              </div>
             </div>
           </motion.div>
         </div>
@@ -184,7 +186,7 @@ export default function Deals() {
 function StatBox({ icon, label, value }) {
   return (
     <motion.div
-      className="bg-white/20 backdrop-blur-md p-5 rounded-xl cursor-pointer"
+      className="bg-white/20  backdrop-blur-md w-full rounded-xl py-4 px-4 cursor-pointer"
       variants={{
         hidden: { opacity: 0, y: 20 },
         show: { opacity: 1, y: 0 },
@@ -193,15 +195,15 @@ function StatBox({ icon, label, value }) {
       transition={{ type: "spring", stiffness: 150 }}
     >
       <motion.div
-        className="flex items-center gap-2 text-white/90"
+        className="flex items-center gap-2  text-[19px] text-white/90"
         whileInView={{ x: [0, 3, 0] }}
         viewport={{ once: false }}
         transition={{ repeat: Infinity, duration: 2 }}
       >
-        {icon} <span>{label}</span>
+      <span>{label}</span>
       </motion.div>
-
-      <h2 className="text-2xl font-bold mt-1">{value}</h2>
+      
+      <h2 className="text-2xl flex gap-4 items-center font-bold mt-1"><span>{icon}</span> {value}</h2>
     </motion.div>
   );
 }
@@ -210,17 +212,16 @@ function StatBox({ icon, label, value }) {
 function TimeBox({ label, value }) {
   return (
     <motion.div
-      className="hidden md:block bg-white text-gray-800 font-bold px-6 py-4 rounded-xl shadow overflow-hidden"
+      className="sm:block bg-white text-gray-800 font-bold px-6 py-4 rounded-xl shadow overflow-hidden"
       initial={{ opacity: 0, y: 10 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: false }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.3 }}
     >
       <motion.div
-        key={value}
+        key={value} // keep this for animation replay
         initial={{ rotateX: 90, opacity: 0 }}
-        whileInView={{ rotateX: 0, opacity: 1 }}
-        viewport={{ once: false }}
-        transition={{ duration: 0.3 }}
+        animate={{ rotateX: 0, opacity: 1 }}
+        transition={{ duration: 0.25 }}
         className="text-3xl"
       >
         {value.toString().padStart(2, "0")}
@@ -230,3 +231,4 @@ function TimeBox({ label, value }) {
     </motion.div>
   );
 }
+

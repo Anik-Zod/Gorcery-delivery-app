@@ -67,7 +67,7 @@ function MainBanner() {
         </div>
 
         {/* SEARCH BAR (Mobile) */}
-        <div className="sm:hidden mt-10 px-4 relative">
+        <div className="sm:hidden mt-10 px-4 mb-4 relative">
           <div className="relative w-full">
             <input
               onChange={(e) => setInput(e.target.value)}
