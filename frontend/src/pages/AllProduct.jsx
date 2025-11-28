@@ -14,7 +14,7 @@ function AllProduct() {
   const dispatch = useDispatch();
 
   const {
-    data: products,
+    data: products=[],
     isLoading,
     isError,
     error,

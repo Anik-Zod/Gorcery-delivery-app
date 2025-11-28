@@ -31,14 +31,36 @@ app.use(cookieParser())
 app.use(passport.initialize());
 
 app.use(express.static('public'));
-app.use(helmet());
+
+app.use(
+  helmet({
+    crossOriginOpenerPolicy: false,
+    crossOriginResourcePolicy: false,
+    contentSecurityPolicy: false
+  })
+);
+
+
 app.use(morgan('dev'))
+
 app.use(cors({
-  origin:['https://gorcery-delivery-app-pyq7.vercel.app','http://localhost:5173'],
-  methods: ['GET', 'POST', 'PUT', 'DELETE'],
-  credentials: true,
-  allowedHeaders: ['Content-Type','Authorization']
-}))
+  origin: function(origin, callback) {
+    const allowed = [
+      "https://gorcery-delivery-app-pyq7.vercel.app",
+      "https://gorcery-delivery-app.vercel.app",
+      "http://localhost:5173"
+    ];
+
+    if (!origin || allowed.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error("CORS blocked"));
+    }
+  },
+  credentials: true
+}));
+
+
 app.use(rateLimit({
   windowMs: 15 * 60 * 1000, 
   max:1000,
