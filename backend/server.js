@@ -4,6 +4,7 @@ import dotenv from 'dotenv';
 import helmet from 'helmet';
 import morgan from 'morgan';
 import rateLimit from 'express-rate-limit';
+import stripe from './src/configs/stripe.js';
 
 import cookieParser from 'cookie-parser';
 import homeRouter from './src/routes/home.route.js';
@@ -18,6 +19,7 @@ import orderRouter from './src/routes/order.route.js';
 import { connectDB } from './db.js';
 import passport from 'passport';
 import './src/configs/auth/google.js'
+import stripeRouter from './src/routes/stripe.route.js';
 
 dotenv.config();
 
@@ -31,36 +33,14 @@ app.use(cookieParser())
 app.use(passport.initialize());
 
 app.use(express.static('public'));
-
-app.use(
-  helmet({
-    crossOriginOpenerPolicy: false,
-    crossOriginResourcePolicy: false,
-    contentSecurityPolicy: false
-  })
-);
-
-
+app.use(helmet());
 app.use(morgan('dev'))
-
 app.use(cors({
-  origin: function(origin, callback) {
-    const allowed = [
-      "https://gorcery-delivery-app-pyq7.vercel.app",
-      "https://gorcery-delivery-app.vercel.app",
-      "http://localhost:5173"
-    ];
-
-    if (!origin || allowed.includes(origin)) {
-      callback(null, true);
-    } else {
-      callback(new Error("CORS blocked"));
-    }
-  },
-  credentials: true
-}));
-
-
+  origin:['https://gorcery-delivery-app-pyq7.vercel.app','http://localhost:5173'],
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  credentials: true,
+  allowedHeaders: ['Content-Type','Authorization']
+}))
 app.use(rateLimit({
   windowMs: 15 * 60 * 1000, 
   max:1000,
@@ -77,11 +57,13 @@ app.use('/product',productRouter)
 app.use('/cart',cartRouter)
 app.use('/address',addressRouter)
 app.use('/order',orderRouter)
+app.use('/stripe',stripeRouter)
 
 
 const startServer = async()=>{
   await connectDB();
   await ConnectCloudinary();
+  console.log('Stripe configured:', !!process.env.STRIPE_SECRET_KEY);
   
   const PORT = process.env.PORT || 3000;
   app.listen(PORT, () => {

@@ -1,34 +1,34 @@
-import React, { useEffect, useState } from 'react'
-import Navbar from './components/Navber/Navbar'
-import Home from './pages/Home'
-import { Route, Routes, useLocation } from 'react-router-dom'
-import { Toaster } from 'react-hot-toast';
-import Footer from './components/Footer';
-import { useDispatch, useSelector } from 'react-redux';
-import Login from './components/auth/Login';
-import AllProduct from './pages/AllProduct';
-import ProductCategory from './pages/ProductCategory';
-import ProductDetails from './pages/ProductDetails';
-import Cart from './pages/Cart';
-import AddAddress from './pages/AddAddress';
-import MyOrders from './pages/MyOrders';
-import HotDeals from './pages/HotDeals';
-import Contact from './pages/Contact';
-import OAuthCallback from './components/auth/OAuthCallback';
-import { setSearchOpen } from './features/appSlice';
-import SearchBox from './components/search/SearchBox';
-import UserProfile from './pages/userProfile/UserProfile';
-
-
+import React, { useEffect, useRef, useState } from "react";
+import Navbar from "./components/Navber/Navbar";
+import Home from "./pages/Home";
+import { Route, Routes, useLocation } from "react-router-dom";
+import { Toaster } from "react-hot-toast";
+import Footer from "./components/Footer";
+import { useDispatch, useSelector } from "react-redux";
+import Login from "./components/auth/Login";
+import AllProduct from "./pages/AllProduct";
+import ProductCategory from "./pages/ProductCategory";
+import ProductDetails from "./pages/ProductDetails";
+import Cart from "./pages/Cart";
+import AddAddress from "./pages/AddAddress";
+import MyOrders from "./pages/MyOrders";
+import HotDeals from "./pages/HotDeals";
+import Contact from "./pages/Contact";
+import OAuthCallback from "./components/auth/OAuthCallback";
+import { setSearchOpen, setShowUserLogin } from "./features/appSlice";
+import SearchBox from "./components/search/SearchBox";
+import UserProfile from "./pages/userProfile/UserProfile";
+import CheckoutPage from "./pages/CheckoutPage";
+import PaymentSuccess from "./components/checkout/PaymentSuccess";
+import PaymentFailed from "./components/checkout/PaymentFailed";
 
 export default function App() {
-  const isSellerPath = useLocation().pathname.includes('seller');
-  const showUserLogin = useSelector(state=>state.app.showUserLogin) 
-
-
+  const isSellerPath = useLocation().pathname.includes("seller");
+  const showUserLogin = useSelector((state) => state.app.showUserLogin);
 
   const searchOpen = useSelector((state) => state.app.searchOpen);
- const dispatch = useDispatch();
+  const dispatch = useDispatch();
+
   useEffect(() => {
     const handleGlobalKey = (e) => {
       // Open Search
@@ -47,28 +47,52 @@ export default function App() {
     return () => window.removeEventListener("keydown", handleGlobalKey);
   }, []);
 
+  const inputRef = useRef();
+  const onClose = () => dispatch(setSearchOpen(false));
+  useEffect(() => {
+    if (!searchOpen) return; // only attach listener when overlay is open
+
+    const handleClickOutside = (e) => {
+      if (inputRef.current && !inputRef.current.contains(e.target)) {
+        onClose();
+      }
+    };
+    document.addEventListener("mouseup", handleClickOutside);
+    return () => document.removeEventListener("mouseup", handleClickOutside);
+  }, [searchOpen, dispatch, inputRef]);
   return (
     <div>
-      
-      {isSellerPath?null:<Navbar/>}
-      {showUserLogin && <Login/>}
-      <Toaster/>
-      <div>
+      {isSellerPath ? null : <Navbar />}
+      {showUserLogin && <Login />}
+
+      {searchOpen && (
+        <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-70 " />
+      )}
+      {searchOpen && (
+        <div ref={inputRef} className="">
+          <SearchBox onClose={onClose} />
+        </div>
+      )}
+      <Toaster />
+      <div className="mt-23">
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/products" element={<AllProduct />} />
-          <Route path="/products/:category" element={<ProductCategory/>} />
-          <Route path="/products/:category/:id" element={<ProductDetails/>} />
-          <Route path="/cart" element={<Cart/>} />
-          <Route path="/hotdeals" element={<HotDeals/>} />
-          <Route path="/contact" element={<Contact/>} />
-          <Route path="/add-address" element={<AddAddress/>} />
-          <Route path="/my-orders" element={<MyOrders/>} />
-          <Route path="/me" element={<OAuthCallback/>}/>
-          <Route path="/profile/*" element={<UserProfile/>}/>
+          <Route path="/products/:category" element={<ProductCategory />} />
+          <Route path="/products/:category/:id" element={<ProductDetails />} />
+          <Route path="/cart" element={<Cart />} />
+          <Route path="/hotdeals" element={<HotDeals />} />
+          <Route path="/contact" element={<Contact />} />
+          <Route path="/add-address" element={<AddAddress />} />
+          <Route path="/my-orders" element={<MyOrders />} />
+          <Route path="/me" element={<OAuthCallback />} />
+          <Route path="/profile/*" element={<UserProfile />} />
+          <Route path="/checkout" element={<CheckoutPage />} />
+          <Route path="/payment-success" element={<PaymentSuccess />} />
+          <Route path="/payment-failure" element={<PaymentFailed />} />
         </Routes>
       </div>
-      <Footer/>
+      <Footer />
     </div>
-  )
+  );
 }

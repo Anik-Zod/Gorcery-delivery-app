@@ -44,8 +44,8 @@ export default function Deals() {
       transition={{ duration: 0.8, ease: "easeOut" }}
     >
       <motion.div
-        className="w-full rounded-3xl p-10 mt-8 
-        bg-gradient-to-r from-[#ff4b2b] via-[#ff6a3d] to-[#ff961c]
+        className="w-full rounded-2xl p-10 mt-8 
+        bg-gradient-to-r from-[#f3310f] via-[#ff6a3d] to-[#ff961c]
         text-white relative overflow-hidden"
         initial={{ backgroundPosition: "0% 0%" }}
         whileInView={{ backgroundPosition: "100% 100%" }}

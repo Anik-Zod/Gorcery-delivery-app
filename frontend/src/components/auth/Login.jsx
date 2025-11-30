@@ -9,7 +9,7 @@ import {
 
 import axiosInstance from "../../api/axios.js"
 import { useForm } from "react-hook-form";
-import { Shield, Star, Users } from "lucide-react";
+import { Shield, Star, Users, X } from "lucide-react";
 
 export default function Login() {
   const dispatch = useDispatch();
@@ -93,7 +93,7 @@ export default function Login() {
   return (
     <div
       onClick={() => dispatch(setShowUserLogin(false))}
-      className="fixed inset-0 z-40 flex items-center justify-center bg-black/70 p-4 text-sm text-gray-600"
+      className="fixed inset-0 z-70 flex items-center justify-center bg-black/70 p-4 text-sm text-gray-600"
     >
       <div className="flex bg-white rounded-2xl overflow-hidden shadow-2xl max-w-4xl w-full" onClick={(e) => e.stopPropagation()}>
         <div className="hidden md:block w-2/3">
@@ -106,8 +106,9 @@ export default function Login() {
               ? handleSubmit(handleLogin)
               : handleSubmit(handleRegistration)
           }
-          className="flex flex-col gap-4 p-8 w-full md:w-1/2 bg-white"
+          className="relative flex flex-col gap-4 p-8 w-full md:w-1/2 bg-white"
         >
+          <span   className="absolute right-10 top-6 hover:text-green-600 cursor-pointer"><X/></span>
           <h2 className="text-3xl font-bold text-center text-green-800 mb-4">
             {state === "login" ? "User Login" : "Create Account"}
           </h2>

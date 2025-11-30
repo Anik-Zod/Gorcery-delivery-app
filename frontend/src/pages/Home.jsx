@@ -10,7 +10,7 @@ import Deals from "../components/Hotdeal/Deals"
 
 function Home() {
   return (
-    <div>
+    <div className=''>
         {/* <Practice/> */}
         <MainBanner/>
         <div className='container sm:mt-22 '>

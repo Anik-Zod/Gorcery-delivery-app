@@ -37,8 +37,13 @@ function SearchBox({ onClose }) {
     setFilterProducts(filtered);
     }, [debouncedText, products])
 
+    const handleClick = (e)=>{
+      e.preventDefault();
+      onClose()
+    }
+
   return (
-    <div className="fixed z-50 left-1/2 top-1/2 w-[67%] h-[90%] md:max-w-7xl -translate-x-1/2 -translate-y-1/2 rounded-4xl bg-white shadow-xl overflow-hidden animate-scaleIn">
+    <div className="fixed z-80 left-1/2 top-1/2 w-[67%] h-[90%] md:max-w-7xl -translate-x-1/2 -translate-y-1/2 rounded-4xl bg-white shadow-xl overflow-hidden animate-scaleIn">
       {/* HEADER */}
       <div className="bg-gradient-to-r  to-green-600 from-[#083F29] text-white  px-4 py-7">
         <div className="flex justify-between items-center">
@@ -86,7 +91,9 @@ function SearchBox({ onClose }) {
 
         <div className=" grid grid-cols-3 sm:grid-cols-4 gap-3">
             {filterProducts.length > 0 &&  filterProducts.slice(0,4).map((product) => (
-              <div key={product._id}>
+              <div
+              onClick={handleClick}
+              key={product._id}>
                 <ProductCard product={product} onNavigate={() => onClose && onClose()} />
               </div>
             ))}

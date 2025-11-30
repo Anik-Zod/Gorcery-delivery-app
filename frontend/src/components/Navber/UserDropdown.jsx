@@ -33,7 +33,7 @@ function UserDropdown({ user }) {
       {/* avatar + name trigger */}
       <div
         onClick={() => setOpen(!open)}
-        className="flex border-2 cursor-pointer border-gray-400/40 rounded-[5px] overflow-hidden max-w-60 px-3 py-1 items-center gap-2"
+        className="flex border-2 cursor-pointer border-gray-400/40 rounded-[5px] overflow-hidden max-w-50 px-3 py-1 items-center gap-2"
       >
         <div className="relative">
           <img
@@ -45,7 +45,7 @@ function UserDropdown({ user }) {
           />
           <div className="text-green-600 rounded-full absolute -bottom-0.5 -right-1 size-3 border-2 border-gray-300 bg-green-600"></div>
         </div>
-        <p>{user.name}</p>
+        <p className="truncate">{user.name}</p>
       </div>
 
       {/* dropdown menu */}

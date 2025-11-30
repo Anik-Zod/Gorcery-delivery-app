@@ -13,6 +13,7 @@ export default function MenuItem({ user }) {
   const dispatch = useDispatch();
   const handleLogout = () => {
     dispatch(logout());
+    window.location.href= "./"
   };
   const navigate = useNavigate();
   return (

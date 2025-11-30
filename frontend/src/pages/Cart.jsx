@@ -1,15 +1,21 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { removeCartItems } from "../features/cartSlice";
+import { removeCartItems, clearCart } from "../features/cartSlice";
 import { assets } from "../assets/assets";
 import { NavLink, useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import { replaceAddress } from "../features/appSlice";
 import axiosInstance from "../api/axios";
-import { ShoppingBag,Check } from "lucide-react";
+import { ShoppingBag, Check } from "lucide-react";
 import { motion } from "motion/react";
+import CheckoutForm from "../components/checkout/CheckoutForm";
+import CheckoutPage from "./CheckoutPage";
+import { useRef } from "react";
+import EmptyCart from "../components/cart/EmptyCart";
 
 const Cart = () => {
+  const [openCheckout, setOpenCheckout] = useState(false);
+  const checkoutRef = useRef();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const products = useSelector((state) => state.cart.cart);
@@ -54,8 +60,15 @@ const Cart = () => {
   }, [addresses, selectedAddress]);
 
   const [paymentOption, setPaymentOption] = useState("Online");
+  console.log(openCheckout);
+  console.log(paymentOption);
 
   const handlePlaceOrder = async () => {
+    if (!user) {
+      toast.error("Please Sign Up First")
+      return null; // stops rendering
+    }
+
     if (!selectedAddress) {
       toast.error("Please select a delivery address before placing order");
       return;
@@ -64,7 +77,10 @@ const Cart = () => {
       toast.error("Your cart is empty");
       return;
     }
-
+    if (paymentOption === "Online") {
+      setOpenCheckout(true);
+      return;
+    }
     const itemsToSend = products.map((product) => ({
       product: product.productId,
       quantity: product.quantity,
@@ -81,7 +97,7 @@ const Cart = () => {
       if (res.data.success) {
         toast.success("Order placed successfully!");
         // Clear entire cart after order
-        dispatch(removeCartItems({ productId: null, clearAll: true }));
+        dispatch(clearCart());
       } else {
         toast.error(res.data.message || "Failed to place order");
       }
@@ -92,6 +108,18 @@ const Cart = () => {
     }
   };
 
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      if (checkoutRef.current && !checkoutRef.current.contains(e.target)) {
+        setOpenCheckout(false);
+      }
+    };
+    document.addEventListener("click", handleClickOutside);
+    return () => {
+      document.removeEventListener("click", handleClickOutside);
+    };
+  }, []);
+
   return (
     <div>
       {products.length > 0 ? (
@@ -99,7 +127,9 @@ const Cart = () => {
           <div className="flex-1 max-w-4xl">
             <h1 className="text-3xl font-medium mb-6">
               Shopping Cart{" "}
-              <span className="text-[18px] text-primary-dull ml-5 bg-primary/20 py-2 px-10 rounded-lg ">{quantity} Items</span>
+              <span className="text-[18px] text-primary-dull ml-5 bg-primary/20 py-2 px-10 rounded-lg ">
+                {quantity} Items
+              </span>
             </h1>
 
             <div className="grid grid-cols-[2fr_1fr_1fr] text-gray-500 text-base font-medium pb-3">
@@ -225,42 +255,53 @@ const Cart = () => {
                 Payment Method
               </p>
 
-                <div className="flex flex-col mt-2 gap-2">
-      {/* Online Payment */}
-      <div
-        onClick={() => setPaymentOption("Online")}
-        className={`flex items-center space-x-3 cursor-pointer select-none p-2 rounded 
-          ${paymentOption === "Online" ? "bg-primary/20" : "bg-gray-100"} hover:bg-primary/30 transition`}
-      >
-        <div
-          className={`h-5 w-5 flex items-center justify-center border-2 rounded
-            ${paymentOption === "Online" ? "bg-primary border-primary" : "border-gray-300"}`}
-        >
-          {paymentOption === "Online" && <Check size={14} color="white" />}
-        </div>
-        <span>Online Payment</span>
-      </div>
+              <div className="flex flex-col mt-2 gap-2">
+                {/* Online Payment */}
+                <div
+                  onClick={() => setPaymentOption("Online")}
+                  className={`flex items-center space-x-3 cursor-pointer select-none p-2 rounded 
+          ${
+            paymentOption === "Online" ? "bg-primary/20" : "bg-gray-100"
+          } hover:bg-primary/30 transition`}
+                >
+                  <div
+                    className={`h-5 w-5 flex items-center justify-center border-2 rounded
+            ${
+              paymentOption === "Online"
+                ? "bg-primary border-primary"
+                : "border-gray-300"
+            }`}
+                  >
+                    {paymentOption === "Online" && (
+                      <Check size={14} color="white" />
+                    )}
+                  </div>
+                  <span>Online Payment</span>
+                </div>
 
-      {/* Cash On Delivery */}
-      <div
-        onClick={() => setPaymentOption("COD")}
-        className={`flex items-center space-x-3 cursor-pointer select-none p-2 rounded
-          ${paymentOption === "COD" ? "bg-primary/20" : "bg-gray-100"} hover:bg-primary/30 transition`}
-      >
-        <div
-          className={`h-5 w-5 flex items-center justify-center border-2 rounded
-            ${paymentOption === "COD" ? "bg-primary border-primary" : "border-gray-300"}`}
-        >
-          {paymentOption === "COD" && <Check size={14} color="white" />}
-        </div>
-        <span>Cash On Delivery</span>
-      </div>
-    </div>
-            
-            
-            
-            
-            
+                {/* Cash On Delivery */}
+                <div
+                  onClick={() => setPaymentOption("COD")}
+                  className={`flex items-center space-x-3 cursor-pointer select-none p-2 rounded
+          ${
+            paymentOption === "COD" ? "bg-primary/20" : "bg-gray-100"
+          } hover:bg-primary/30 transition`}
+                >
+                  <div
+                    className={`h-5 w-5 flex items-center justify-center border-2 rounded
+            ${
+              paymentOption === "COD"
+                ? "bg-primary border-primary"
+                : "border-gray-300"
+            }`}
+                  >
+                    {paymentOption === "COD" && (
+                      <Check size={14} color="white" />
+                    )}
+                  </div>
+                  <span>Cash On Delivery</span>
+                </div>
+              </div>
             </div>
 
             <hr className="border-gray-300" />
@@ -285,7 +326,10 @@ const Cart = () => {
             </div>
 
             <button
-              onClick={handlePlaceOrder}
+              onClick={(e) => {
+                e.stopPropagation(); // prevent outside close
+                handlePlaceOrder();
+              }}
               className="w-full py-3 mt-6 cursor-pointer bg-primary text-white font-medium hover:bg-primary-dull transition"
             >
               Place Order
@@ -293,25 +337,34 @@ const Cart = () => {
           </div>
         </div>
       ) : (
-        <div className="container mt-16 overflow-x-clip ">
-          <div className="flex gap-2">
-            <ShoppingBag /> <span> Shopping Card</span>
-          </div>
+        <EmptyCart />
+      )}
+      {openCheckout && (
+        <div className="fixed inset-0 z-40 flex items-center justify-center p-4">
           <div
-
-            className="flex flex-col md:flex-row justify-center w-full"
+            className="absolute inset-0 bg-black/40 backdrop-blur-md"
+            onClick={() => setOpenCheckout(false)}
+          />
+          <div
+            ref={checkoutRef}
+            className="relative z-50 w-[95%] md:w-[30%] bg-white rounded-lg max-h-[90vh] overflow-y-auto shadow-lg p-4"
           >
-            <motion.img             animate={{ rotate: [-10, 10, -10] }}
-            transition={{
-              duration: 2, // 2 seconds per swing cycle
-              repeat: Infinity, // repeat forever
-              ease: "easeInOut", // smooth in and out
-            }} src="Empty-Cart.png" alt="" />
-            <div className="flex justify-center gap-5 flex-col max-w-xl">
-              <p className=" text-3xl">Your cart is feeling lonely</p>
-              <h1>It looks like you haven't added anything to your cart yet. Let's change that and find some amazing products for you!</h1>
-              <NavLink to={"/products"} className="bg-primary py-2 rounded-xl px-10 max-w-60 text-white">Discover Products</NavLink>
-            </div>
+            <CheckoutPage
+              amount={Math.round((totalPrice + tax) * 100)}
+              currency="usd"
+              paymentType={paymentOption}
+              userId={user?._id}
+              items={products.map((product) => ({
+                product: product.productId,
+                quantity: product.quantity,
+              }))}
+              address={selectedAddress?._id}
+              onClose={() => setOpenCheckout(false)}
+              onSuccess={() => {
+                setOpenCheckout(false);
+                dispatch(clearCart());
+              }}
+            />
           </div>
         </div>
       )}

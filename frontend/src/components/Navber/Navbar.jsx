@@ -3,7 +3,7 @@ import { NavLink, useNavigate } from "react-router-dom";
 import { assets } from "../../assets/assets";
 import { useDispatch, useSelector } from "react-redux";
 import { setShowUserLogin, logout, setUser } from "../../features/appSlice";
-import {House, ShoppingBag, Info, Contact, Salad, LogOut } from 'lucide-react';
+import { House, ShoppingBag, Info, Contact, Salad, LogOut } from "lucide-react";
 import SearchBer from "../search/SearchBer";
 import UserDropdown from "./UserDropdown";
 import Menu from "./MenuItem";
@@ -20,29 +20,27 @@ export default function Navbar() {
   const cart = useSelector((state) => state.cart.cart);
   const navigate = useNavigate();
 
-
-
-
   useEffect(() => {
     if (searchQuery.length > 0) {
       navigate("/products");
     }
   }, [searchQuery]);
-  
-const manuRef = useRef();
 
-useEffect(() => {
-  const handleClickOutside = (e) => {
-    if (manuRef.current && !manuRef.current.contains(e.target)) {
-      setOpen(false);
-    }
-  };
-  document.addEventListener("mousedown", handleClickOutside);
+  const manuRef = useRef();
 
-  return () => {
-    document.removeEventListener("mousedown", handleClickOutside);
-  };
-}, []);
+  // outside click for mobile nav manue
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      if (manuRef.current && !manuRef.current.contains(e.target)) {
+        setOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
 
   const handleLogout = () => {
     dispatch(logout());
@@ -50,19 +48,49 @@ useEffect(() => {
     axiosInstance.get("/user/logout");
   };
 
+  const[showNav,setShowNav] = useState(true);
+const lastScrollY = useRef(0);
+
+const controlNavbar = () => {
+  if (window.scrollY > lastScrollY.current) {
+    setShowNav(false);
+  } else {
+    setShowNav(true);
+  }
+  lastScrollY.current = window.scrollY;
+};
+
+useEffect(() => {
+  window.addEventListener("scroll", controlNavbar);
+  return () => window.removeEventListener("scroll", controlNavbar);
+}, []);
+
+
   return (
-    <nav className="flex relative items-center justify-between px-6 sm:px-6 md:px-16 lg:px-24 xl:px-27 py-4 border-b border-gray-300 bg-white  transition-all">
+    <nav className={`fixed top-0 left-0 w-full  z-50 flex  items-center  duration-500 justify-between px-6 sm:px-6 md:px-16 lg:px-24 xl:px-27 py-4 border-b border-gray-300 bg-white  transition-all ${showNav ?"translate-y-0":"-translate-y-full"}`}>
       <NavLink to={"/"}>
-        <div className="flex gap-2 lg:text-3xl text-green-600"> <Salad color="green" size={34}/> <p>Grocery</p></div>
+        <div className="flex gap-2 lg:text-3xl text-green-600">
+          {" "}
+          <Salad color="green" size={34} /> <p>Grocery</p>
+        </div>
       </NavLink>
 
       {/* Desktop Menu */}
       <div className="hidden sm:flex items-center gap-7">
-        <NavLink className="hover:text-green-600  text-[16px]" to={"/"}> Home</NavLink>
-        <NavLink className="hover:text-green-600  text-[16px]" to={"/products"}>All Product</NavLink>
-        <NavLink className="hover:text-green-600  text-[16px]" to={"/hotdeals"}>Hot Deal </NavLink>
-        <NavLink className="hover:text-green-600  text-[16px]" to={"/contact"}>Contact </NavLink>
-       <SearchBer/>
+        <NavLink className="hover:text-green-600  text-[16px]" to={"/"}>
+          {" "}
+          Home
+        </NavLink>
+        <NavLink className="hover:text-green-600  text-[16px]" to={"/products"}>
+          All Product
+        </NavLink>
+        <NavLink className="hover:text-green-600  text-[16px]" to={"/hotdeals"}>
+          Hot Deal{" "}
+        </NavLink>
+        <NavLink className="hover:text-green-600  text-[16px]" to={"/contact"}>
+          Contact{" "}
+        </NavLink>
+        <SearchBer />
 
         <div
           onClick={() => navigate("/cart")}
@@ -75,8 +103,8 @@ useEffect(() => {
         </div>
 
         {user ? (
-          <div onClick={()=>setOpenMenu(!openMenu)}>
-            <UserDropdown user={user}/>
+          <div onClick={() => setOpenMenu(!openMenu)}>
+            <UserDropdown user={user} />
           </div>
         ) : (
           <button
@@ -102,7 +130,7 @@ useEffect(() => {
 
       {/* Mobile Menu */}
       <div
-      ref={manuRef}
+        ref={manuRef}
         className={`fixed top-0 right-0 h-full w-64 bg-white shadow-lg transform transition-transform duration-300 ease-in-out z-50
         ${open ? "translate-x-0" : "translate-x-full"}`}
       >
@@ -116,31 +144,51 @@ useEffect(() => {
           </button>
         </div>
 
+        <nav className="flex flex-col px-6 space-y-7 text-sm bg-white">
+          {/* image and */}
 
+          {user && (
+            <div className="flex gap-3 py-3 mb-2 border-b border-gray-300  items-center">
+              <div>
+                <img
+                  src={user.image}
+                  alt="user image"
+                  loading="lazy"
+                  className="size-13 object-cover rounded-full border-2 border-gray-300"
+                />
+              </div>
 
-        <nav className="flex flex-col px-6 space-y-7 text-sm">
-                  {/* image and */}
+              <div className="">
+                <p className="font-bold tracking-wide text-xl">{user.name}</p>
+                <p className="text-gray-400">{user.email}</p>
+              </div>
+            </div>
+          )}
 
-        {user && <div className="flex gap-3 py-3 mb-2 border-b border-gray-300  items-center">
-          <div>
-            <img
-              src={user.image}
-              alt="user image"
-              loading="lazy"
-              className="size-13 object-cover rounded-full border-2 border-gray-300"
-            />
-          </div>
-
-          <div className="">
-            <p className="font-bold tracking-wide text-xl">{user.name}</p>
-            <p className="text-gray-400">{user.email}</p>
-          </div>
-        </div>}
-
-          <NavItems to="/" title="Home" onClick={() => setOpen(false)} icon={<House size={24}/>} />
-          <NavItems to="/products" title="All Product" onClick={() => setOpen(false)} icon={<ShoppingBag size={24} />} />
-          <NavItems to="#" title="About" onClick={() => setOpen(false)} icon={<Info size={24}/>} />
-          <NavItems to="/contact" title="Contact" onClick={() => setOpen(false)} icon={<Contact size={24}/>} /> 
+          <NavItems
+            to="/"
+            title="Home"
+            onClick={() => setOpen(false)}
+            icon={<House size={24} />}
+          />
+          <NavItems
+            to="/products"
+            title="All Product"
+            onClick={() => setOpen(false)}
+            icon={<ShoppingBag size={24} />}
+          />
+          <NavItems
+            to="#"
+            title="About"
+            onClick={() => setOpen(false)}
+            icon={<Info size={24} />}
+          />
+          <NavItems
+            to="/contact"
+            title="Contact"
+            onClick={() => setOpen(false)}
+            icon={<Contact size={24} />}
+          />
 
           {user && (
             <div
@@ -148,7 +196,7 @@ useEffect(() => {
               className=" py-3 text-xl hover:bg-primary-dull/50 rounded-xl w-full"
             >
               <NavLink to="/my-orders" className="flex items-center">
-                <ShoppingBag size={20} className="mr-4 ml-2"/>
+                <ShoppingBag size={20} className="mr-4 ml-2" />
                 My Orders
               </NavLink>
             </div>
@@ -162,7 +210,7 @@ useEffect(() => {
               }}
               className="cursor-pointer px-6 py-2  flex items-center bg-primary hover:bg-dull transition text-white rounded-xl text-xl w-full "
             >
-              <LogOut size={18} className="mr-4"/>
+              <LogOut size={18} className="mr-4" />
               Logout
             </button>
           ) : (
@@ -176,7 +224,6 @@ useEffect(() => {
               Sign in
             </button>
           )}
-          
         </nav>
       </div>
     </nav>

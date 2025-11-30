@@ -126,7 +126,7 @@ function AllProduct() {
         <div className="hidden lg:block sticky top-0 self-start">
           <Filter />
         </div>
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 md:gap-6 lg:grid-cols-5 overflow-clip">
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 gap-3 md:gap-4 lg:grid-cols-4 overflow-clip">
           {isLoading ? (
             // Show 10 skeletons while API loading
             Array.from({ length: 10 }).map((_, i) => <CardSkeleton key={i} />)
