@@ -14,7 +14,7 @@ export default function CheckoutPage({
   userId,
   items,
   address,
-  onClose,
+  onError,
   onSuccess, // optional callback that parent can provide to handle post-order actions
 }) {
   const [clientSecret, setClientSecret] = useState(null);
@@ -99,9 +99,7 @@ export default function CheckoutPage({
           items={items}
           address={address}
           onSuccess={() => {
-            // Close the modal and call parent supplied onSuccess (e.g., clear cart)
-            onClose && onClose();
-            onSuccess && onSuccess();
+             onSuccess();
           }}
         />
         <div className="mt-4 flex items-center justify-between">

@@ -340,9 +340,9 @@ const Cart = () => {
         <EmptyCart />
       )}
       {openCheckout && (
-        <div className="fixed inset-0 z-40 flex items-center justify-center p-4">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
           <div
-            className="absolute inset-0 bg-black/40 backdrop-blur-md"
+            className="absolute inset-0  bg-black/40 backdrop-blur-md"
             onClick={() => setOpenCheckout(false)}
           />
           <div
@@ -359,10 +359,13 @@ const Cart = () => {
                 quantity: product.quantity,
               }))}
               address={selectedAddress?._id}
-              onClose={() => setOpenCheckout(false)}
               onSuccess={() => {
                 setOpenCheckout(false);
                 dispatch(clearCart());
+                navigate("/payment-success")
+              }}
+              onError={()=>{
+                navigate("/payment-failure")
               }}
             />
           </div>

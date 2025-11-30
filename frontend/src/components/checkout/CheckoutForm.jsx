@@ -3,7 +3,7 @@ import { useState } from "react";
 import axiosInstance from "../../api/axios";
 import toast from "react-hot-toast";
 
-export default function CheckoutForm({ amount, currency, items, address, onSuccess }) {
+export default function CheckoutForm({ amount, currency, items, address, onSuccess,onError }) {
   const stripe = useStripe();
   const elements = useElements();
   const [loading, setLoading] = useState(false);
@@ -51,6 +51,7 @@ export default function CheckoutForm({ amount, currency, items, address, onSucce
     } catch (err) {
       console.error("Stripe payment error:", err);
       setErrorMessage(err?.message || "Something went wrong");
+      onError()
     } finally {
       setLoading(false);
     }

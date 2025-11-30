@@ -53,8 +53,9 @@ function SearchBox({ onClose }) {
             </div>
             <h2 className="font-semibold text-xl">Search Products <span className="text-sm bg-[#2F6B46] border-[0.5px] border-gray-200 py-1 px-3 rounded-md ml-5">Ctrl + K</span></h2>
           </div>
-          <button className="mr-10 cursor-pointer transition  hover:rotate-20 hover:bg-white/30 rounded-full p-1" onClick={() => onClose && onClose()}>
-            <X size={30} />
+          
+          <button className="mr-10 cursor-pointer transition   rounded-full p-1" onClick={() => onClose && onClose()}>
+            <span className=" bg-[#2F6B46] border-[0.5px] font-semibold border-gray-200 py-1 px-5 rounded-md ml-5">Esc</span>
           </button>
         </div>
         {/* SEARCH INPUT */}
