@@ -7,6 +7,7 @@ import NewsLatter from '../components/Banners/NewsLatter'
 import Practice from '../components/Practice'
 
 import Deals from "../components/Hotdeal/Deals"
+import GoogleLoginButton from "../components/auth/GoogleLoginButton"
 
 function Home() {
   return (

@@ -14,8 +14,8 @@ import AddAddress from "./pages/AddAddress";
 import MyOrders from "./pages/MyOrders";
 import HotDeals from "./pages/HotDeals";
 import Contact from "./pages/Contact";
-import OAuthCallback from "./components/auth/OAuthCallback";
-import { setSearchOpen, setShowUserLogin } from "./features/appSlice";
+
+import { setSearchOpen } from "./features/appSlice";
 import SearchBox from "./components/search/SearchBox";
 import UserProfile from "./pages/userProfile/UserProfile";
 import CheckoutPage from "./pages/CheckoutPage";
@@ -85,7 +85,6 @@ export default function App() {
           <Route path="/contact" element={<Contact />} />
           <Route path="/add-address" element={<AddAddress />} />
           <Route path="/my-orders" element={<MyOrders />} />
-          <Route path="/me" element={<OAuthCallback />} />
           <Route path="/profile/*" element={<UserProfile />} />
           <Route path="/checkout" element={<CheckoutPage />} />
           <Route path="/payment-success" element={<PaymentSuccess />} />

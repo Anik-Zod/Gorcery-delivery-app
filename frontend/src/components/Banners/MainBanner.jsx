@@ -15,7 +15,7 @@ function MainBanner() {
   };
 
   return (
-    <div className="mt-12 relative w-full overflow-hidden">
+    <div className="mt-32 relative w-full overflow-hidden">
       {/* absolute div */}
       <div className="absolute  inset-0 [mask-image:linear-gradient(to_bottom,transparent,black_10%,black_70%,transparent)] ">
         <Spinner />
