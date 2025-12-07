@@ -190,3 +190,32 @@ export const googleLogin = async (req, res) => {
   }
 };
 
+// get all users
+export const getAllUser = async (req, res) => {
+  try {
+    const users = await User.find();
+
+    if (users.length === 0) {
+      return res.status(404).json({ message: "No users available" });
+    }
+
+    res.status(200).json({ users });
+    
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+//get user
+export const getUser = async(req,res)=>{
+  try {
+    const{id} = req.params
+    const user = await User.findById(id).select('-password')
+    if(user.length==0) return res.status(404).json({ message: "No users available" });
+
+    res.status(200).json(user);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+}
+

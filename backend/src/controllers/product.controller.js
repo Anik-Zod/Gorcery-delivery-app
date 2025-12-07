@@ -11,7 +11,7 @@ export const addProduct = async (req, res) => {
       !productData.category ||
       !productData.price ||
       !productData.category ||
-      !productData.description
+      !productData.description 
     ) {
       return res.json({ success: false, message: "Please fill all fields" });
     }

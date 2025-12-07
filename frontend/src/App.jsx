@@ -22,8 +22,11 @@ import CheckoutPage from "./pages/CheckoutPage";
 import PaymentSuccess from "./components/checkout/PaymentSuccess";
 import PaymentFailed from "./components/checkout/PaymentFailed";
 
+
 export default function App() {
-  const isSellerPath = useLocation().pathname.includes("seller");
+  const location = useLocation();
+  const hideNavbar = location.pathname.startsWith("/dashboard");
+
   const showUserLogin = useSelector((state) => state.app.showUserLogin);
 
   const searchOpen = useSelector((state) => state.app.searchOpen);
@@ -62,7 +65,7 @@ export default function App() {
   }, [searchOpen, dispatch, inputRef]);
   return (
     <div>
-      {isSellerPath ? null : <Navbar />}
+      {!hideNavbar && <Navbar />}
       {showUserLogin && <Login />}
 
       {searchOpen && (

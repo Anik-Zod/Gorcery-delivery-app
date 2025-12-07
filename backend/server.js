@@ -35,12 +35,20 @@ app.use(passport.initialize());
 app.use(express.static('public'));
 app.use(helmet());
 app.use(morgan('dev'))
+
+const allowedOrigins = [
+  process.env.FRONTEND_URL,
+  process.env.DASHBOARD_URL,
+  process.env.PRODUCTION_URL
+];
+
 app.use(cors({
-  origin:['https://gorcery-delivery-app-pyq7.vercel.app','http://localhost:5173'],
+  origin: allowedOrigins,
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   credentials: true,
-  allowedHeaders: ['Content-Type','Authorization']
-}))
+  allowedHeaders: ['Content-Type', 'Authorization']
+}));
+
 app.options('*', cors());
 
 app.use(rateLimit({

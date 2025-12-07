@@ -69,9 +69,10 @@ useEffect(() => {
   return (
     <nav className={`fixed top-0 left-0 w-full  z-50 flex  items-center  duration-500 justify-between px-6 sm:px-6 md:px-16 lg:px-24 xl:px-27 py-4 border-b border-gray-300 bg-white  transition-all ${showNav ?"translate-y-0":"-translate-y-full"}`}>
       <NavLink to={"/"}>
-        <div className="flex gap-2 lg:text-3xl text-green-600">
+        <div className="flex gap-2 lg:text-4xl font-extrabold relative">
           {" "}
           <Salad color="green" size={34} /> <p>Grocery</p>
+          <div className="size-2 bg-green-600 rounded-full absolute bottom-0 -right-3"></div>
         </div>
       </NavLink>
 
