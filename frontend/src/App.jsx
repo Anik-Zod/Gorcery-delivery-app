@@ -21,6 +21,7 @@ import UserProfile from "./pages/userProfile/UserProfile";
 import CheckoutPage from "./pages/CheckoutPage";
 import PaymentSuccess from "./components/checkout/PaymentSuccess";
 import PaymentFailed from "./components/checkout/PaymentFailed";
+import Dashboard from "./components/Dashboard";
 
 
 export default function App() {
@@ -93,6 +94,9 @@ export default function App() {
           <Route path="/payment-success" element={<PaymentSuccess />} />
           <Route path="/payment-failure" element={<PaymentFailed />} />
         </Routes>
+        <div className="fixed bottom-9 right-10">
+          <Dashboard/>
+        </div>
       </div>
       <Footer />
     </div>

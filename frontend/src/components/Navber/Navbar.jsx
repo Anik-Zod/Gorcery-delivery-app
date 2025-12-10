@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import { assets } from "../../assets/assets";
 import { useDispatch, useSelector } from "react-redux";
-import { setShowUserLogin, logout, setUser } from "../../features/appSlice";
+import { setShowUserLogin, logout } from "../../features/appSlice";
 import { House, ShoppingBag, Info, Contact, Salad, LogOut } from "lucide-react";
 import SearchBer from "../search/SearchBer";
 import UserDropdown from "./UserDropdown";
@@ -15,7 +15,7 @@ export default function Navbar() {
   const [openMenu, setOpenMenu] = useState(false);
 
   const { searchQuery } = useSelector((state) => state.products);
-  const { user, showUserLogin } = useSelector((state) => state.app);
+  const { user } = useSelector((state) => state.app);
 
   const cart = useSelector((state) => state.cart.cart);
   const navigate = useNavigate();

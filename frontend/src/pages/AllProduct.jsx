@@ -16,8 +16,6 @@ function AllProduct() {
   const {
     data: products=[],
     isLoading,
-    isError,
-    error,
   } = useFetch("products", "/product/list");
 
   const searchQuery = useSelector((state) => state.products.searchQuery);
