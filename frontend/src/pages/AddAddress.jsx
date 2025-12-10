@@ -1,9 +1,10 @@
 import React, { useState } from 'react'
-import { assets } from '../assets/assets'
-import axiosInstance from '../api/axios'
 import { useDispatch } from 'react-redux'
 import { setAddress } from '../features/appSlice'
 import { useNavigate } from 'react-router-dom'
+import axiosInstance from '../api/axios'
+import { motion, AnimatePresence } from 'framer-motion'
+import { CheckCircle, XCircle, MapPin, Phone, Home, Flag, Building } from 'lucide-react'
 
 function AddAddress() {
   const dispatch = useDispatch()
@@ -16,120 +17,111 @@ function AddAddress() {
     country: '',
     phone: ''
   })
-
   const [loading, setLoading] = useState(false)
-  const [error, setError] = useState(null)
-  const [success, setSuccess] = useState(null)
+  const [feedback, setFeedback] = useState({ type: '', message: '' })
 
   const handleChange = (e) => {
     const { name, value } = e.target
-    setLocalAddress((prev) => ({
-      ...prev,
-      [name]: value
-    }))
+    setLocalAddress((prev) => ({ ...prev, [name]: value }))
   }
 
   const onSubmitHandler = async (e) => {
     e.preventDefault()
     setLoading(true)
-    setError(null)
-    setSuccess(null)
-
+    setFeedback({ type: '', message: '' })
     try {
       const response = await axiosInstance.post('/address/add', address)
-
       if (response.data.success) {
         dispatch(setAddress(address))
-        setSuccess('Address added successfully!')
-        navigate('/cart')
-        dispatch(setAddress(address))
-        // setLocalAddress({ street: '', city: '', state: '', zipcode: '', country: '', phone: '' })
+        setFeedback({ type: 'success', message: 'Address added successfully!' })
+        setTimeout(() => navigate('/cart'), 1200)
       } else {
-        setError(response.data.message || 'Failed to add address')
+        setFeedback({ type: 'error', message: response.data.message || 'Failed to add address' })
       }
     } catch (err) {
-      setError(err.message)
+      setFeedback({ type: 'error', message: err.message })
     } finally {
       setLoading(false)
     }
   }
 
+  const inputFields = [
+    { name: 'street', placeholder: 'Street', Icon: Home },
+    { name: 'city', placeholder: 'City', Icon: Building },
+    { name: 'state', placeholder: 'State', Icon: Flag },
+    { name: 'zipCode', placeholder: 'Zip Code', Icon: MapPin, type: 'number' },
+    { name: 'country', placeholder: 'Country', Icon: Flag },
+    { name: 'phone', placeholder: 'Phone', Icon: Phone },
+  ]
+
   return (
-    <div className="mt-16 pb-16">
-      <p className="text-2xl md:text-3xl text-gray-500">
-        Add shipping <span className="font-semibold text-primary">Address</span>
-      </p>
-      <div className="flex flex-col-reverse md:flex-row justify-between mt-10">
-        <div className="flex-1 max-w-md">
-          <form onSubmit={onSubmitHandler} className="space-y-3 mt-6 text-sm">
-            <InputField
-              handleChange={handleChange}
-              address={address}
-              name="street"
-              type="text"
-              placeholder="Street"
-            />
-            <div className="grid grid-cols-2 gap-4">
-              <InputField
-                handleChange={handleChange}
-                address={address}
-                name="city"
-                type="text"
-                placeholder="City"
-              />
-              <InputField
-                handleChange={handleChange}
-                address={address}
-                name="state"
-                type="text"
-                placeholder="State"
-              />
-            </div>
+    <div className="relative pt-16 -mt-10 px-4 md:px-12 lg:px-24 pb-16 min-h-screen overflow-hidden bg-gradient-to-b from-gray-900 via-gray-800 to-gray-900">
+      {/* Stars Background */}
+      <StarsLayer />
+      {/* Floating Rigs */}
+      <RigsLayer />
 
-            <div className="grid grid-cols-2 gap-4">
-              <InputField
-                handleChange={handleChange}
-                address={address}
-                name="zipCode"
-                type="number"
-                placeholder="Zip code"
-              />
-              <InputField
-                handleChange={handleChange}
-                address={address}
-                name="country"
-                type="text"
-                placeholder="Country"
-              />
-            </div>
+      <motion.h1
+        className="text-3xl sm:text-4xl md:text-5xl font-bold text-white relative z-10"
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
+      >
+        Add Shipping <span className="text-primary">Address</span>
+      </motion.h1>
 
-            <InputField
-              handleChange={handleChange}
-              address={address}
-              name="phone"
-              type="text"
-              placeholder="Phone"
-            />
-
-            {error && <p className="text-red-600">{error}</p>}
-            {success && <p className="text-green-600">{success}</p>}
+      <div className="flex flex-col lg:flex-row justify-between items-center gap-10 mt-10 relative z-10">
+        {/* Form */}
+        <motion.div
+          className="flex-1 w-full max-w-lg bg-gray-800/90 backdrop-blur-md p-8 sm:p-10 rounded-3xl shadow-2xl relative"
+          initial={{ opacity: 0, x: -60 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.6 }}
+        >
+          <form onSubmit={onSubmitHandler} className="space-y-5 sm:space-y-6">
+            {inputFields.map(({ name, placeholder, Icon, type }) => (
+              <FloatingInput
+                key={name}
+                name={name}
+                type={type || 'text'}
+                placeholder={placeholder}
+                value={address[name]}
+                onChange={handleChange}
+                Icon={Icon}
+              />
+            ))}
 
             <button
               disabled={loading}
-              className={`w-full mt-6 py-3 uppercase text-white ${
-                loading ? 'bg-primary-dull cursor-not-allowed' : 'bg-primary hover:bg-primary-dull cursor-pointer'
-              } transition`}
+              className={`w-full py-3 rounded-xl font-semibold text-white text-lg transition-all ${
+                loading
+                  ? 'bg-gray-500 cursor-not-allowed'
+                  : 'bg-gradient-to-r from-primary to-primary-light hover:from-primary-light hover:to-primary shadow-lg'
+              }`}
             >
               {loading ? 'Saving...' : 'Save Address'}
             </button>
           </form>
-        </div>
 
-        <img
-          className="md:mr-16 mb-16 md:mt-0"
-          src={assets.add_address_iamge} // Check your asset name here
-          alt="Add Address Illustration"
-        />
+          {/* Feedback Toast */}
+          <AnimatePresence>
+            {feedback.message && (
+              <motion.div
+                initial={{ opacity: 0, y: -20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -20 }}
+                className={`absolute top-6 left-1/2 -translate-x-1/2 px-5 py-3 rounded-xl flex items-center gap-2 font-medium shadow-lg text-sm sm:text-base ${
+                  feedback.type === 'success'
+                    ? 'bg-green-100 text-green-700'
+                    : 'bg-red-100 text-red-700'
+                }`}
+              >
+                {feedback.type === 'success' ? <CheckCircle /> : <XCircle />}
+                {feedback.message}
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </motion.div>
       </div>
     </div>
   )
@@ -137,17 +129,89 @@ function AddAddress() {
 
 export default AddAddress
 
-export const InputField = ({ type, placeholder, name, handleChange, address }) => {
+const FloatingInput = ({ Icon, placeholder, name, value, onChange, type }) => {
   return (
-    <input
-      className="w-full px-2 py-2.5 border border-gray-500/50 rounded outline-none text-gray-500 focus:border-primary transition"
-      type={type}
-      placeholder={placeholder}
-      onChange={handleChange}
-      name={name}
-      value={address[name]}
-      required
-      aria-label={placeholder}
-    />
+    <div className="relative w-full">
+      {Icon && <Icon className="absolute top-1/2 left-3 -translate-y-1/2 text-gray-400" size={20} />}
+      <input
+        type={type}
+        id={name}
+        name={name}
+        value={value}
+        onChange={onChange}
+        placeholder=" "
+        required
+        className="peer w-full rounded-xl border border-gray-600 px-12 py-4 text-white text-base sm:text-lg placeholder-transparent focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all bg-gray-800/50"
+      />
+      <label
+        htmlFor={name}
+        className="absolute left-12 top-4 text-gray-400 text-base sm:text-lg transition-all peer-placeholder-shown:top-4 peer-placeholder-shown:text-gray-400 peer-placeholder-shown:text-base peer-focus:-top-3 peer-focus:text-primary peer-focus:text-sm"
+      >
+        {placeholder}
+      </label>
+    </div>
+  )
+}
+
+// Stars Layer
+const StarsLayer = () => {
+  const stars = Array.from({ length: 120 })
+  return (
+    <div className="absolute inset-0 z-0 overflow-hidden">
+      {stars.map((_, i) => (
+        <motion.div
+          key={i}
+          className="absolute bg-white rounded-full"
+          style={{
+            width: Math.random() * 2 + 1,
+            height: Math.random() * 2 + 1,
+            top: `${Math.random() * 100}%`,
+            left: `${Math.random() * 100}%`,
+            opacity: Math.random() * 0.8 + 0.2,
+          }}
+          animate={{ y: [0, -5, 0], x: [0, 3, -3, 0] }}
+          transition={{
+            duration: Math.random() * 6 + 4,
+            repeat: Infinity,
+            repeatType: 'mirror',
+            delay: Math.random() * 5,
+          }}
+        />
+      ))}
+    </div>
+  )
+}
+
+// Floating Rigs Layer
+const RigsLayer = () => {
+  const rigs = Array.from({ length: 8 })
+  return (
+    <div className="absolute inset-0 z-0 overflow-hidden">
+      {rigs.map((_, i) => (
+        <motion.div
+          key={i}
+          className="absolute bg-primary/70 rounded-lg"
+          style={{
+            width: 50,
+            height: 50,
+            top: `${Math.random() * 90}%`,
+            left: `${Math.random() * 90}%`,
+          }}
+          animate={{
+            y: [0, -30, 0],
+            x: [0, 20, -20, 0],
+            rotate: [0, 360],
+            scale: [1, 1.1, 1],
+          }}
+          transition={{
+            duration: Math.random() * 10 + 6,
+            repeat: Infinity,
+            repeatType: 'mirror',
+            ease: 'easeInOut',
+            delay: Math.random() * 5,
+          }}
+        />
+      ))}
+    </div>
   )
 }

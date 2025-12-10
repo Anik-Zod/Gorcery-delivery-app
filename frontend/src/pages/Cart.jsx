@@ -60,8 +60,6 @@ const Cart = () => {
   }, [addresses, selectedAddress]);
 
   const [paymentOption, setPaymentOption] = useState("Online");
-  console.log(openCheckout);
-  console.log(paymentOption);
 
   const handlePlaceOrder = async () => {
     if (!user) {
@@ -69,7 +67,7 @@ const Cart = () => {
       return null; // stops rendering
     }
 
-    if (!selectedAddress) {
+    if (!selectedAddress && paymentOption != "Online") {
       toast.error("Please select a delivery address before placing order");
       return;
     }
@@ -90,7 +88,7 @@ const Cart = () => {
       const res = await axiosInstance.post("/order/cod", {
         userId: user._id,
         items: itemsToSend,
-        address: selectedAddress,
+        address: selectedAddress._id,
         paymentType: paymentOption,
       });
 

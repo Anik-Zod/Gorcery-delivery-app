@@ -7,7 +7,7 @@ const orderSchema = new mongoose.Schema({
         quantity:{type:Number, required:true}
     }],
     amount:{type:Number, required:true},
-    address:{type:mongoose.Schema.Types.ObjectId, required:true, ref:'address'},
+    address:{type:mongoose.Schema.Types.ObjectId, required:false, ref:'address'},
     status:{type:String, default:'Order Placed'},
     paymentType:{type:String, required:true},
     isPaid:{type:Boolean, required:true, default:false}

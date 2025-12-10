@@ -57,7 +57,7 @@ export const placeOrderOnline = async (req, res) => {
     return res.status(401).json({ message: "Not Authorized" });
   }
   
-  const {items, address, paymentType="Online", paymentIntentId, amount } =
+  const {items, address="", paymentType="Online", paymentIntentId, amount } =
     req.body;
 
   if (!paymentIntentId) {
@@ -66,7 +66,7 @@ export const placeOrderOnline = async (req, res) => {
 
   try {
     // validate items & address
-    if (!address || !Array.isArray(items) || items.length === 0) {
+    if ( !Array.isArray(items) || items.length === 0) {
       return res.status(400).json({ success: false, message: "Invalid data" });
     }
 
@@ -109,7 +109,7 @@ export const placeOrderOnline = async (req, res) => {
       userId,
       items,
       amount: amountInDollars,
-      address,
+      address: address || undefined,
       paymentType: "Online",
       isPaid: true,
       status: "Order Placed",
