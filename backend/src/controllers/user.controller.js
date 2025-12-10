@@ -49,6 +49,7 @@ export const register = async (req, res, next) => {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production", // HTTPS only in prod
       sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
+      domain: ".vercel.app",
       path: "/",
       maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
     });
@@ -79,7 +80,7 @@ export const login = async (req, res) => {
     if (!user)
       return res.json({ success: false, message: "wrong credentials" });
 
-    const istrue = await bcrypt.compare(password, user.password);
+    const istrue = bcrypt.compare(password, user.password);
     if (!istrue)
       return res.json({ success: false, message: "wrong credentials" });
 
@@ -93,6 +94,7 @@ export const login = async (req, res) => {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production", // HTTPS only in prod
       sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
+      domain: ".vercel.app",
       path: "/",
       maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
     });
@@ -172,6 +174,7 @@ export const googleLogin = async (req, res) => {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production", // HTTPS only in prod
       sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
+      domain: ".vercel.app",
       path: "/",
       maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
     });
