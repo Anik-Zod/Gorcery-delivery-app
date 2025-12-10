@@ -21,7 +21,7 @@ function PaymentSuccess() {
       {/* Confetti */}
       <Confetti width={width} height={height} recycle={false} numberOfPieces={200} />
 
-      <div className="flex flex-col lg:flex-row items-center bg-white shadow-2xl rounded-3xl overflow-hidden max-w-6xl w-full">
+      <div className="flex flex-col lg:flex-row items-center bg-white rounded-3xl overflow-hidden max-w-6xl w-full">
         
         {/* Illustration */}
         <div className="w-full lg:w-1/2">

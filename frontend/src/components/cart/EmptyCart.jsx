@@ -6,7 +6,7 @@ import { ShoppingBag, ShoppingCart } from "lucide-react";
 
 const EmptyCart = () => {
   return (
-    <div className="flex justify-center items-center min-h-screen bg-gradient-to-br from-blue-50 to-white p-4">
+    <div className="flex justify-center items-center  h-full  p-4">
       <motion.div
         className="bg-white rounded-2xl shadow-2xl p-8 md:p-12 max-w-lg w-full text-center relative overflow-hidden"
         initial={{ opacity: 0, y: 50 }}

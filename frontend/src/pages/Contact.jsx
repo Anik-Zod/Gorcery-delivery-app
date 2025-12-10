@@ -33,8 +33,9 @@ function Contact() {
       </motion.div>
 
       {/* CONTENT */}
-      <div className="container flex flex-col justify-center lg:flex-row lg:justify-between mt-10">
-        <div className="pt-6">
+      <div className="container flex flex-col justify-center lg:flex-row lg:justify-around mt-10">
+
+        <div className="pt-6 w-full space-y-1">
           <h1 className="px-10 text-3xl font-bold text-green-900 mb-8">
             Contact information
           </h1>
@@ -87,9 +88,9 @@ function ContactForm() {
       whileInView={{ opacity: 1, y: 0, scale: 1 }}
       transition={{ duration: 0.8, ease: "easeOut" }}
       viewport={{ once: true }}
-      className="min-h-screen flex justify-center bg-gray-50"
+      className="min-h-screen w-full flex justify-center bg-gray-50"
     >
-      <div className="bg-white rounded-2xl p-8 w-full max-w-4xl shadow-xl">
+      <div className="bg-white rounded-2xl p-8 w-full max-w-4xl ">
         <h2 className="text-3xl font-bold text-green-900 mb-8">
           Send us a Message
         </h2>
@@ -105,7 +106,7 @@ function ContactForm() {
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               className="flex items-center gap-4 px-15 py-3 bg-green-800 text-white rounded-xl 
-                         font-semibold shadow-xl hover:bg-green-900 transition"
+                         font-semibold shadow-xl hover:bg-green-900 transition w-full"
             >
               <Send />
               Submit
@@ -136,7 +137,7 @@ const Textarea = ({ label }) => (
   <motion.div className="flex flex-col md:col-span-2">
     <label className="font-semibold mb-2">{label}</label>
     <textarea
-      rows={5}
+      rows={1}
       placeholder="Please provide detailed information..."
       className="border rounded-xl p-3 transition-all duration-300
                  focus:scale-[1.02] focus:shadow-lg focus:ring-2 focus:ring-green-700"
