@@ -26,7 +26,6 @@ export default function CheckoutPage({
     const createIntent = async () => {
       try {
         const res = await axiosInstance.post("/stripe/create-payment-intent", {
-          userId: user._id,
           amount: amount,
           currency: currency,
           customer_email: user.email,

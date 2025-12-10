@@ -63,7 +63,7 @@ const Cart = () => {
 
   const handlePlaceOrder = async () => {
     if (!user) {
-      toast.error("Please Sign Up First")
+      toast.error("Please Sign Up First");
       return null; // stops rendering
     }
 
@@ -360,10 +360,10 @@ const Cart = () => {
               onSuccess={() => {
                 setOpenCheckout(false);
                 dispatch(clearCart());
-                navigate("/payment-success")
+                navigate("/payment-success");
               }}
-              onError={()=>{
-                navigate("/payment-failure")
+              onError={() => {
+                navigate("/payment-failure");
               }}
             />
           </div>
