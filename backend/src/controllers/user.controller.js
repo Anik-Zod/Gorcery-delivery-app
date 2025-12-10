@@ -171,7 +171,7 @@ export const googleLogin = async (req, res) => {
     );
 
     // ✅ Store YOUR token (not Google token)
-    res.cookie("token", token, {
+    res.cookie("token", jwtToken, {
       httpOnly: true,
       secure: true,
       sameSite: "none",
