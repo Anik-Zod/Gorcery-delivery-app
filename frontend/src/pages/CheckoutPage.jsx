@@ -14,7 +14,6 @@ export default function CheckoutPage({
   userId,
   items,
   address,
-  onError,
   onSuccess, // optional callback that parent can provide to handle post-order actions
 }) {
   const [clientSecret, setClientSecret] = useState(null);
@@ -27,6 +26,7 @@ export default function CheckoutPage({
     const createIntent = async () => {
       try {
         const res = await axiosInstance.post("/stripe/create-payment-intent", {
+          userId: user._id,
           amount: amount,
           currency: currency,
           customer_email: user.email,

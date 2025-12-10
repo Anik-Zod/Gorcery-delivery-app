@@ -4,8 +4,8 @@ import { getAllOrders, getUserOrders, placeOrderCOD, placeOrderOnline } from '..
 
 const orderRouter = Router();
 
-orderRouter.post('/cod',authUser,placeOrderCOD);
-orderRouter.post('/online',authUser,placeOrderOnline)
+orderRouter.post('/cod',placeOrderCOD);
+orderRouter.post('/online',placeOrderOnline)
 orderRouter.get('/myOrder/:userId',getUserOrders)
 orderRouter.get('/seller',authUser,getAllOrders)
 

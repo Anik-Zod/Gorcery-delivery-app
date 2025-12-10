@@ -5,7 +5,7 @@ import stripe from "../configs/stripe.js";
 //place Order
 export const placeOrderCOD = async (req, res) => {
   try {
-    const { userId, items, address, paymentType } = req.body;
+    const { userId, items, address, paymentType } = req.body; 
     if (!address || !Array.isArray(items) || items.length === 0)
       return res.json({ success: false, message: "Invalid data" });
 
@@ -52,12 +52,7 @@ export const placeOrderCOD = async (req, res) => {
 };
 
 export const placeOrderOnline = async (req, res) => {
-  const userId = req.userId;
-  if (!userId) {
-    return res.status(401).json({ message: "Not Authorized" });
-  }
-  
-  const {items, address="", paymentType="Online", paymentIntentId, amount } =
+  const {userId,items, address="", paymentType="Online", paymentIntentId, amount } =
     req.body;
 
   if (!paymentIntentId) {
