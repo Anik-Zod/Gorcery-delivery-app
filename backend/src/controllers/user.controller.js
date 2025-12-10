@@ -47,8 +47,10 @@ export const register = async (req, res, next) => {
     // Set cookie
     res.cookie("token", token, {
       httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
+      secure: true,
+      sameSite: "none",
+      domain:process.env.DOMAIN,
+      path:"/",
       maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
     });
 
@@ -88,10 +90,12 @@ export const login = async (req, res) => {
     });
 
     // Set cookie
-    res.cookie("token", token, {
+     res.cookie("token", token, {
       httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
+      secure: true,
+      sameSite: "none",
+      domain:process.env.DOMAIN,
+      path:"/",
       maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
     });
 
@@ -167,11 +171,13 @@ export const googleLogin = async (req, res) => {
     );
 
     // ✅ Store YOUR token (not Google token)
-    res.cookie("token", jwtToken, {
+    res.cookie("token", token, {
       httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
-      maxAge: 7 * 24 * 60 * 60 * 1000,
+      secure: true,
+      sameSite: "none",
+      domain:process.env.DOMAIN,
+      path:"/",
+      maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
     });
 
     res.status(200).json({
