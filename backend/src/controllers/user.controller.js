@@ -47,10 +47,9 @@ export const register = async (req, res, next) => {
     // Set cookie
     res.cookie("token", token, {
       httpOnly: true,
-      secure: true,
-      sameSite: "none",
-      domain:process.env.DOMAIN,
-      path:"/",
+      secure: process.env.NODE_ENV === "production", // HTTPS only in prod
+      sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
+      path: "/",
       maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
     });
 
@@ -71,7 +70,7 @@ export const login = async (req, res) => {
 
     // Response is sent here if email or password is missing
     if (!email || !password)
-      res.json({
+      return res.status(400).json({
         success: false,
         message: "email and password both are required",
       });
@@ -90,12 +89,11 @@ export const login = async (req, res) => {
     });
 
     // Set cookie
-     res.cookie("token", token, {
+    res.cookie("token", token, {
       httpOnly: true,
-      secure: true,
-      sameSite: "none",
-      domain:process.env.DOMAIN,
-      path:"/",
+      secure: process.env.NODE_ENV === "production", // HTTPS only in prod
+      sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
+      path: "/",
       maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
     });
 
@@ -132,6 +130,7 @@ export const logout = async (req, res) => {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
       sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
+      path: "/",
     });
 
     res.status(200).json({ message: "Logout successfully" });
@@ -164,19 +163,16 @@ export const googleLogin = async (req, res) => {
     }
 
     // ✅ Create YOUR OWN JWT
-    const jwtToken = jwt.sign(
-      { id: user._id },
-      process.env.JWT_SECRET,
-      { expiresIn: "7d" }
-    );
+    const jwtToken = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
+      expiresIn: "7d",
+    });
 
     // ✅ Store YOUR token (not Google token)
     res.cookie("token", jwtToken, {
       httpOnly: true,
-      secure: true,
-      sameSite: "none",
-      domain:process.env.DOMAIN,
-      path:"/",
+      secure: process.env.NODE_ENV === "production", // HTTPS only in prod
+      sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
+      path: "/",
       maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
     });
 
@@ -189,7 +185,6 @@ export const googleLogin = async (req, res) => {
         image: user.image,
       },
     });
-
   } catch (err) {
     console.error(err);
     res.status(401).json({ success: false, message: "Invalid Google token" });
@@ -206,22 +201,20 @@ export const getAllUser = async (req, res) => {
     }
 
     res.status(200).json({ users });
-    
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
 };
 
 //get user
-export const getUser = async(req,res)=>{
+export const getUser = async (req, res) => {
   try {
-    const{id} = req.params
-    const user = await User.findById(id).select('-password')
-    if(user.length==0) return res.status(404).json({ message: "No users available" });
+    const { id } = req.params;
+    const user = await User.findById(id).select("-password");
+    if (!user) return res.status(404).json({ message: "No users available" });
 
     res.status(200).json(user);
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
-}
-
+};
