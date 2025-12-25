@@ -74,7 +74,7 @@ function SearchBox({ onClose }) {
       </div>
 
       {/* CONTENT */}
-      <div className="h-107 overflow-y-auto px-4 pb-4">
+      <div className="h-107 overflow-y-auto overflow-x-clip px-4 pb-4">
         <div className="w-full flex mt-6 justify-center mb-3">
           <div className="p-3 bg-gradient-to-b from-green-800 to-green-600 rounded-full">
             <Search color="white" size={20} />
