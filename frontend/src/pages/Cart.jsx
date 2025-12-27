@@ -12,6 +12,7 @@ import CheckoutForm from "../components/checkout/CheckoutForm";
 import CheckoutPage from "./CheckoutPage";
 import { useRef } from "react";
 import EmptyCart from "../components/cart/EmptyCart";
+import AddressPopup from "../components/AddressPopup";
 
 const Cart = () => {
   const [openCheckout, setOpenCheckout] = useState(false);
@@ -49,6 +50,7 @@ const Cart = () => {
   const tax = totalPrice * 0.02; // 2% tax
 
   const [showAddress, setShowAddress] = useState(false);
+  const [showAddressPopup, setShowAddressPopup] = useState(false);
   const [selectedAddress, setSelectedAddress] = useState(
     addresses.length > 0 ? addresses[0] : null
   );
@@ -239,7 +241,7 @@ const Cart = () => {
                     <p
                       onClick={() => {
                         setShowAddress(false);
-                        navigate("/add-address");
+                        setShowAddressPopup(true);
                       }}
                       className="text-primary text-center cursor-pointer p-2 hover:bg-primary/10"
                     >
@@ -258,17 +260,15 @@ const Cart = () => {
                 <div
                   onClick={() => setPaymentOption("Online")}
                   className={`flex items-center space-x-3 cursor-pointer select-none p-2 rounded 
-          ${
-            paymentOption === "Online" ? "bg-primary/20" : "bg-gray-100"
-          } hover:bg-primary/30 transition`}
+          ${paymentOption === "Online" ? "bg-primary/20" : "bg-gray-100"
+                    } hover:bg-primary/30 transition`}
                 >
                   <div
                     className={`h-5 w-5 flex items-center justify-center border-2 rounded
-            ${
-              paymentOption === "Online"
-                ? "bg-primary border-primary"
-                : "border-gray-300"
-            }`}
+            ${paymentOption === "Online"
+                        ? "bg-primary border-primary"
+                        : "border-gray-300"
+                      }`}
                   >
                     {paymentOption === "Online" && (
                       <Check size={14} color="white" />
@@ -281,17 +281,15 @@ const Cart = () => {
                 <div
                   onClick={() => setPaymentOption("COD")}
                   className={`flex items-center space-x-3 cursor-pointer select-none p-2 rounded
-          ${
-            paymentOption === "COD" ? "bg-primary/20" : "bg-gray-100"
-          } hover:bg-primary/30 transition`}
+          ${paymentOption === "COD" ? "bg-primary/20" : "bg-gray-100"
+                    } hover:bg-primary/30 transition`}
                 >
                   <div
                     className={`h-5 w-5 flex items-center justify-center border-2 rounded
-            ${
-              paymentOption === "COD"
-                ? "bg-primary border-primary"
-                : "border-gray-300"
-            }`}
+            ${paymentOption === "COD"
+                        ? "bg-primary border-primary"
+                        : "border-gray-300"
+                      }`}
                   >
                     {paymentOption === "COD" && (
                       <Check size={14} color="white" />
@@ -368,6 +366,9 @@ const Cart = () => {
             />
           </div>
         </div>
+      )}
+      {showAddressPopup && (
+        <AddressPopup onClose={() => setShowAddressPopup(false)} />
       )}
     </div>
   );

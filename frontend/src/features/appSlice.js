@@ -19,7 +19,9 @@ export const appSlice = createSlice({
     },
     logout: (state) => {
       localStorage.removeItem("user");
+      localStorage.removeItem("addresses");
       state.user = null;
+      state.address = [];
       state.isSeller = false;
       state.showUserLogin = false;
     },

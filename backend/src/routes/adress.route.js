@@ -4,7 +4,7 @@ import { addAddress, getAddress } from "../controllers/address.controller.js";
 
 const addressRouter = Router();
 
-addressRouter.post('/add',authUser,addAddress)
+addressRouter.post('/add',addAddress)
 addressRouter.get('/get/:userId',getAddress)
 
 export default addressRouter
