@@ -1,7 +1,8 @@
 import React from "react";
-import { Check, X } from "lucide-react";
+import { Check, X, RotateCcw } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
 import { setPriceRange } from "../../features/productSlice";
+import { motion, AnimatePresence } from "framer-motion";
 
 // Define price ranges
 const priceRanges = [
@@ -15,7 +16,6 @@ const priceRanges = [
 export default function PriceRange() {
   const dispatch = useDispatch();
   const { priceRange } = useSelector((state) => state.products.filters);
-  
 
   // Determine which range is currently selected
   const selectedValue = priceRanges.find(
@@ -31,48 +31,73 @@ export default function PriceRange() {
     }
   };
 
+  const hasSelection = priceRange.min !== 0 || priceRange.max !== Infinity;
+
   return (
-    <div className="rounded-md">
-      <div className="flex flex-col gap-1.5">
-        {priceRanges.map((range) => (
-          <label
+    <div className="flex flex-col gap-1.5">
+      {priceRanges.map((range) => {
+        const isSelected = selectedValue === range.value;
+
+        return (
+          <motion.label
             key={range.value}
-            className="flex items-center gap-1 cursor-pointer select-none text-gray-600 hover:text-gray-800 transition-colors duration-150"
+            whileHover={{ x: 4 }}
+            whileTap={{ scale: 0.98 }}
+            className={`group flex items-center justify-between p-1 rounded-xl cursor-transition-all duration-200 border cursor-pointer ${isSelected
+                ? "bg-primary/5 border-primary/20 shadow-sm"
+                : "bg-transparent border-transparent hover:bg-gray-50"
+              }`}
           >
             {/* Hidden native checkbox */}
             <input
               type="checkbox"
-              checked={selectedValue === range.value}
+              checked={isSelected}
               onChange={() => handleSelect(range)}
               className="hidden"
             />
 
-            {/* Custom checkbox */}
-            <div
-              className={`h-5 w-5 flex items-center justify-center border-2 rounded transition-colors duration-200 ${
-                selectedValue === range.value
-                  ? "bg-primary border-primary"
-                  : "border-gray-300"
-              }`}
-            >
-              {selectedValue === range.value && <Check size={14} color="white" />}
+            <div className="flex items-center gap-3 w-full">
+              {/* Custom Indicator (Square Checkbox Style) */}
+              <div
+                className={`w-5 h-5 rounded-md flex items-center justify-center transition-all duration-300 ${isSelected
+                    ? "bg-primary shadow-md shadow-primary/30"
+                    : "bg-gray-200 group-hover:bg-gray-300"
+                  }`}
+              >
+                <motion.div
+                  initial={false}
+                  animate={{ scale: isSelected ? 1 : 0 }}
+                >
+                  <Check size={12} strokeWidth={3} className="text-white" />
+                </motion.div>
+              </div>
+
+              <span
+                className={`flex-1 text-[15px] font-medium transition-colors ${isSelected ? "text-primary" : "text-gray-600 group-hover:text-gray-900"
+                  }`}
+              >
+                {range.label}
+              </span>
             </div>
+          </motion.label>
+        );
+      })}
 
-            {/* Label */}
-            <span className="px-2 font-medium py-1 rounded hover:bg-primary/10 transition-colors duration-150">
-              {range.label}
-            </span>
-          </label>
-        ))}
-
-        {/* Option to reset to All */}
-        <button
-          className="mt-2 text-sm flex justify-center items-center gap-2 text-primary hover:underline self-start"
-          onClick={() => dispatch(setPriceRange({ min: 0, max: Infinity }))}
-        >
-          <X size={15}/> clear Prices
-        </button>
-      </div>
+      {/* Clear Button */}
+      <AnimatePresence>
+        {hasSelection && (
+          <motion.button
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: 'auto' }}
+            exit={{ opacity: 0, height: 0 }}
+            className="mt-4 w-full flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl bg-gray-100 text-gray-600 text-xs font-bold uppercase tracking-wide hover:bg-red-50 hover:text-red-500 transition-all group"
+            onClick={() => dispatch(setPriceRange({ min: 0, max: Infinity }))}
+          >
+            <RotateCcw size={14} className="group-hover:-rotate-180 transition-transform duration-500" />
+            Reset Filter
+          </motion.button>
+        )}
+      </AnimatePresence>
     </div>
   );
 }

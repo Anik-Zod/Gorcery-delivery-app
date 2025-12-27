@@ -121,7 +121,7 @@ function AllProduct() {
       </div>
 
       <div className="lg:flex lg:gap-4 mt-6">
-        <div className="hidden lg:block sticky top-0 self-start">
+        <div className="hidden lg:block sticky -top-10 self-start">
           <Filter />
         </div>
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 gap-3 md:gap-4 lg:grid-cols-4 overflow-clip">
