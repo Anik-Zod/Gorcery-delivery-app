@@ -11,7 +11,7 @@ import GoogleLoginButton from "../components/auth/GoogleLoginButton"
 
 function Home() {
   return (
-    <div className=''>
+    <div className='overflow-x-clip'>
         {/* <Practice/> */}
         <MainBanner/>
         <div className='container sm:mt-22 '>
