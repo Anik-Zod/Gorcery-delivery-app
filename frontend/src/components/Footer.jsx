@@ -8,7 +8,7 @@ function Footer() {
       initial={{ opacity: 0, y: 40 }}
       whileInView={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.8, ease: "easeOut" }}
-      viewport={{ once: false, amount: 0.2 }}
+      viewport={{ once: true, amount: 0.2 }}
       className="text-gray-500/80 pt-8 px-6 md:px-16 lg:px-24 xl:px-32 mt-24 bg-primary/10"
     >
       <div className="flex flex-wrap justify-between gap-12 md:gap-6">
@@ -18,7 +18,7 @@ function Footer() {
           initial={{ opacity: 0, x: -40 }}
           whileInView={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.6 }}
-          viewport={{ once: false, amount: 0.2 }}
+          viewport={{ once: true, amount: 0.2 }}
           className="max-w-90"
         >
           <motion.img
@@ -82,7 +82,7 @@ function Footer() {
           initial={{ opacity: 0, x: 40 }}
           whileInView={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.6 }}
-          viewport={{ once: false, amount: 0.2 }}
+          viewport={{ once: true, amount: 0.2 }}
           className="max-w-80"
         >
           <p className="text-lg text-gray-800">STAY UPDATED</p>
@@ -128,7 +128,7 @@ function Footer() {
         initial={{ opacity: 0 }}
         whileInView={{ opacity: 1 }}
         transition={{ duration: 0.8 }}
-        viewport={{ once: false, amount: 0.2 }}
+        viewport={{ once: true, amount: 0.2 }}
         className="flex flex-col md:flex-row gap-2 items-center justify-between py-5 text-black"
       >
         <p>© {new Date().getFullYear()} Brand. All rights reserved.</p>
@@ -182,7 +182,7 @@ function FooterColumn({ title, items, index }) {
       initial={{ opacity: 0, y: 40 }}
       whileInView={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.6, delay: index * 0.2 }}
-      viewport={{ once: false, amount: 0.2 }}
+      viewport={{ once: true, amount: 0.2 }}
     >
       <p className="text-lg text-gray-800">{title}</p>
       <ul className="mt-3 flex flex-col gap-2 text-sm">

@@ -5,7 +5,7 @@ import DealsBanner from '../components/Hotdeal/DealsBanner'
 
 function HotDeals() {
   return (
-    <div className='px-10 mt-16'>
+    <div className='sm:px-10 px-3 mt-16'>
         <Deals/>
         <FeaturesSection/>
         <DealsBanner/>

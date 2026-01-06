@@ -68,7 +68,7 @@ function AllProduct() {
   }, [products, debouncedText, categories, priceRange]);
 
   return (
-    <div className=" lg:px-24 px-5 md:px-10 mt-10 mx-auto relative">
+    <div className=" lg:px-16 px-5 md:px-10 mt-10 mx-auto relative">
       <div className="flex border justify-between gap-10 border-black/10 py-4 border-x-0">
         <div className="flex  lg:space-x-30 md:space-x-10 justify-between">
           <div className="flex flex-col w-full">

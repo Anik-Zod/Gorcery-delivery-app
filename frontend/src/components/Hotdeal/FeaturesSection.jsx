@@ -62,7 +62,7 @@ export default function FeaturesSection() {
           key={i}
           custom={i}
           variants={cardVariants}
-          initial="hidden"
+          // initial="hidden"
           whileInView="visible"
           viewport={{ once: false, amount: 0.3 }}
           whileHover={{ y: -6, scale: 1.03, boxShadow: "0px 10px 25px rgba(0,0,0,0.09)" }}

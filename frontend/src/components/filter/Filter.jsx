@@ -13,7 +13,7 @@ export default function Filter() {
       initial={{ opacity: 0, x: -20 }}
       animate={{ opacity: 1, x: 0 }}
       transition={{ duration: 0.5 }}
-      className="w-[280px] hidden lg:flex flex-col gap-6 border border-gray-300/60 rounded"
+      className="w-[260px] hidden lg:flex flex-col gap-6 border border-gray-300/60 rounded"
     >
       {/* Container Card */}
       <div className="bg-white/80 backdrop-blur-xl rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-white/20 overflow-hidden sticky top-24">

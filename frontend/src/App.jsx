@@ -1,3 +1,4 @@
+import LenisProvider from "./components/lenis-provider";
 import React, { useEffect, useRef, useState } from "react";
 import Navbar from "./components/Navber/Navbar";
 import Home from "./pages/Home";
@@ -65,40 +66,42 @@ export default function App() {
     return () => document.removeEventListener("mouseup", handleClickOutside);
   }, [searchOpen, dispatch, inputRef]);
   return (
-    <div>
-      {!hideNavbar && <Navbar />}
-      {showUserLogin && <Login />}
+    <LenisProvider>
+      <div>
+        {!hideNavbar && <Navbar />}
+        {showUserLogin && <Login />}
 
-      {searchOpen && (
-        <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-70 " />
-      )}
-      {searchOpen && (
-        <div ref={inputRef} className="">
-          <SearchBox onClose={onClose} />
+        {searchOpen && (
+          <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-70 " />
+        )}
+        {searchOpen && (
+          <div ref={inputRef} className="">
+            <SearchBox onClose={onClose} />
+          </div>
+        )}
+        <Toaster />
+        <div className="mt-23">
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/products" element={<AllProduct />} />
+            <Route path="/products/:category" element={<ProductCategory />} />
+            <Route path="/products/:category/:id" element={<ProductDetails />} />
+            <Route path="/cart" element={<Cart />} />
+            <Route path="/hotdeals" element={<HotDeals />} />
+            <Route path="/contact" element={<Contact />} />
+            <Route path="/add-address" element={<AddAddress />} />
+            <Route path="/my-orders" element={<MyOrders />} />
+            <Route path="/profile/*" element={<UserProfile />} />
+            <Route path="/checkout" element={<CheckoutPage />} />
+            <Route path="/payment-success" element={<PaymentSuccess />} />
+            <Route path="/payment-failure" element={<PaymentFailed />} />
+          </Routes>
+          <div className="fixed bottom-9 right-10">
+            <Dashboard />
+          </div>
         </div>
-      )}
-      <Toaster />
-      <div className="mt-23">
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/products" element={<AllProduct />} />
-          <Route path="/products/:category" element={<ProductCategory />} />
-          <Route path="/products/:category/:id" element={<ProductDetails />} />
-          <Route path="/cart" element={<Cart />} />
-          <Route path="/hotdeals" element={<HotDeals />} />
-          <Route path="/contact" element={<Contact />} />
-          <Route path="/add-address" element={<AddAddress />} />
-          <Route path="/my-orders" element={<MyOrders />} />
-          <Route path="/profile/*" element={<UserProfile />} />
-          <Route path="/checkout" element={<CheckoutPage />} />
-          <Route path="/payment-success" element={<PaymentSuccess />} />
-          <Route path="/payment-failure" element={<PaymentFailed />} />
-        </Routes>
-        <div className="fixed bottom-9 right-10">
-          <Dashboard/>
-        </div>
+        <Footer />
       </div>
-      <Footer />
-    </div>
+    </LenisProvider>
   );
 }

@@ -7,19 +7,14 @@ import OffersCard from "./OffersCard";
 import Spinner from "./Spinner";
 
 function MainBanner() {
-  const dispatch = useDispatch();
-  const [input, setInput] = useState("Pepsi");
-
-  const handleChange = () => {
-    dispatch(setSearchQuery(input));
-  };
+  // State moved to SearchInput component to prevent re-renders
 
   return (
     <div className="mt-32 relative w-full overflow-hidden">
       {/* absolute div */}
       <div className="absolute  inset-0 [mask-image:linear-gradient(to_bottom,transparent,black_10%,black_70%,transparent)] ">
         <Spinner />
-        
+
       </div>
 
       <div className="">
@@ -67,26 +62,41 @@ function MainBanner() {
         </div>
 
         {/* SEARCH BAR (Mobile) */}
-        <div className="sm:hidden mt-10 px-4 mb-4 relative">
-          <div className="relative w-full">
-            <input
-              onChange={(e) => setInput(e.target.value)}
-              className="w-full border border-gray-200 rounded-2xl py-3 pl-5 pr-12 
-            shadow-sm bg-white/70 backdrop-blur-lg focus:ring-2 focus:ring-primary 
-            transition-all outline-none"
-              placeholder="Search fresh products..."
-            />
-
-            <Search
-              onClick={handleChange}
-              className="absolute right-4 top-3 text-primary cursor-pointer hover:scale-105 transition"
-              size={22}
-            />
-          </div>
-        </div>
+        {/* SEARCH BAR (Mobile) */}
+        <SearchInput />
       </div>
     </div>
   );
 }
 
 export default MainBanner;
+
+function SearchInput() {
+  const dispatch = useDispatch();
+  const [input, setInput] = useState("Pepsi");
+
+  const handleChange = () => {
+    dispatch(setSearchQuery(input));
+  };
+
+  return (
+    <div className="sm:hidden mt-10 px-4 mb-4 relative">
+      <div className="relative w-full">
+        <input
+          value={input}
+          onChange={(e) => setInput(e.target.value)}
+          className="w-full border border-gray-200 rounded-2xl py-3 pl-5 pr-12 
+            shadow-sm bg-white/70 backdrop-blur-lg focus:ring-2 focus:ring-primary 
+            transition-all outline-none"
+          placeholder="Search fresh products..."
+        />
+
+        <Search
+          onClick={handleChange}
+          className="absolute right-4 top-3 text-primary cursor-pointer hover:scale-105 transition"
+          size={22}
+        />
+      </div>
+    </div>
+  );
+}

@@ -1,8 +1,9 @@
+import React from "react";
 import { useNavigate } from "react-router-dom";
 import { motion } from "motion/react";
 import { LogOut } from "lucide-react";
 
-export default function OffersCard({ service, from, discount, image }) {
+const OffersCard = React.memo(function OffersCard({ service, from, discount, image }) {
   const navigate = useNavigate();
 
   return (
@@ -94,4 +95,6 @@ export default function OffersCard({ service, from, discount, image }) {
       </motion.div>
     </motion.div>
   );
-}
+});
+
+export default OffersCard;

@@ -8,42 +8,42 @@ import { useEffect, useState } from "react";
 // import { setSearchOpen } from "../../features/appSlice";
 
 function SearchBox({ onClose }) {
-    const dispatch = useDispatch();
-    const handleSearch = (e) => {
-      dispatch(setSearchQuery(e.target.value));
-    };
+  const dispatch = useDispatch();
+  const handleSearch = (e) => {
+    dispatch(setSearchQuery(e.target.value));
+  };
 
 
-    const {
+  const {
     data: products,
     isLoading,
     isError,
     error,
   } = useFetch("products", "/product/list");
-    const searchQuery = useSelector((state) => state.products.searchQuery);
-    const [filterProducts, setFilterProducts] = useState([]);
-    const debouncedText = useDebounce(searchQuery, 400);
+  const searchQuery = useSelector((state) => state.products.searchQuery);
+  const [filterProducts, setFilterProducts] = useState([]);
+  const debouncedText = useDebounce(searchQuery, 400);
 
-    useEffect(()=>{
-     if(!products)return
-     const filtered = products?.filter((product)=>{
-        const matchesSearch = debouncedText?.length === 0 ||
+  useEffect(() => {
+    if (!products) return
+    const filtered = products?.filter((product) => {
+      const matchesSearch = debouncedText?.length === 0 ||
         product.name.toLowerCase().includes(debouncedText.toLowerCase());
-        
-        const matchesCategory = debouncedText?.length === 0 ||
-         product.category.toLowerCase().includes(debouncedText.toLowerCase());
-        return matchesSearch || matchesCategory
+
+      const matchesCategory = debouncedText?.length === 0 ||
+        product.category.toLowerCase().includes(debouncedText.toLowerCase());
+      return matchesSearch || matchesCategory
     })
     setFilterProducts(filtered);
-    }, [debouncedText, products])
+  }, [debouncedText, products])
 
-    const handleClick = (e)=>{
-      e.preventDefault();
-      onClose()
-    }
+  const handleClick = (e) => {
+    e.preventDefault();
+    onClose()
+  }
 
   return (
-    <div className="fixed z-80 left-1/2 top-1/2 w-[67%] h-[90%] md:max-w-7xl -translate-x-1/2 -translate-y-1/2 rounded-4xl bg-white shadow-xl overflow-hidden animate-scaleIn">
+    <div className="fixed z-80 left-1/2 top-1/2 w-[70%] h-[90%] md:max-w-7xl -translate-x-1/2 -translate-y-1/2 rounded-4xl bg-white shadow-xl overflow-hidden animate-scaleIn">
       {/* HEADER */}
       <div className="bg-gradient-to-r  to-green-600 from-[#083F29] text-white  px-4 py-7">
         <div className="flex justify-between items-center">
@@ -53,7 +53,7 @@ function SearchBox({ onClose }) {
             </div>
             <h2 className="font-semibold text-xl">Search Products <span className="text-sm bg-[#2F6B46] border-[0.5px] border-gray-200 py-1 px-3 rounded-md ml-5">Ctrl + K</span></h2>
           </div>
-          
+
           <button className="mr-10 cursor-pointer transition   rounded-full p-1" onClick={() => onClose && onClose()}>
             <span className=" bg-[#2F6B46] border-[0.5px] font-semibold border-gray-200 py-1 px-5 rounded-md ml-5">Esc</span>
           </button>
@@ -68,13 +68,16 @@ function SearchBox({ onClose }) {
             className="pl-14 w-full text-[16px] rounded-2xl border border-white/30 px-4 py-2 focus:ring-2 focus:bg-white/20 bg-white/10 focus:ring-gray-500 outline-none"
           />
           <div className="text-white/40 absolute top-[12px] left-12">
-            <Search size={20}/>
+            <Search size={20} />
           </div>
         </div>
       </div>
 
       {/* CONTENT */}
-      <div className="h-107 overflow-y-auto overflow-x-clip px-4 pb-4">
+      <div
+        data-lenis-prevent
+        className="h-107 overflow-y-auto overflow-x-clip px-4 pb-4"
+      >
         <div className="w-full flex mt-6 justify-center mb-3">
           <div className="p-3 bg-gradient-to-b from-green-800 to-green-600 rounded-full">
             <Search color="white" size={20} />
@@ -91,16 +94,16 @@ function SearchBox({ onClose }) {
         </h3>
 
         <div className=" grid grid-cols-3 sm:grid-cols-4 gap-3">
-            {filterProducts.length > 0 &&  filterProducts.slice(0,4).map((product) => (
-              <div
+          {filterProducts.length > 0 && filterProducts.slice(0, 4).map((product) => (
+            <div
               onClick={handleClick}
               key={product._id}>
-                <ProductCard product={product} onNavigate={() => onClose && onClose()} />
-              </div>
-            ))}
+              <ProductCard product={product} onNavigate={() => onClose && onClose()} />
+            </div>
+          ))}
         </div>
       </div>
-       
+
     </div>
   );
 }
